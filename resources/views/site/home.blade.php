@@ -32,11 +32,14 @@
     {{-- Video Section --}}
     @include('site.components.video')
 
+    {{-- perfume Video Section --}}
+    {{-- @include('site.components.perfumevideo') --}}
 
     {{-- testimonial Section --}}
     @include('site.components.testimonial')
 
-  
+   {{-- Newsletter/CTA Section --}}
+    @include('site.components.newsletter')
 
    
 

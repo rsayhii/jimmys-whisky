@@ -200,6 +200,10 @@
                 Collection
                 <span class="absolute -top-2 -right-3 bg-primary text-yellow-100 text-xs px-2 py-0.5 rounded-full transform scale-75" style="color: #fef3c7;">New</span>
             </a>
+             <a href="/membership" class="nav-link text-gray-700 hover:text-primary font-medium text-sm tracking-wide transition-colors duration-300">
+              
+                Membership
+            </a>
             <a href="/contact" class="nav-link text-gray-700 hover:text-primary font-medium text-sm tracking-wide transition-colors duration-300">
               
                 Contact Us
@@ -222,11 +226,9 @@
             
             <!-- User -->
             <div class="relative group">
-                <i class="fa-regular fa-user text-gray-600 hover:text-primary cursor-pointer icon-hover text-lg"></i>
-                <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-xl rounded-lg p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <a href="/account" class="block px-3 py-2 text-sm hover:bg-gray-50 rounded">My Account</a>
-                    <a href="/orders" class="block px-3 py-2 text-sm hover:bg-gray-50 rounded">Orders</a>
-                </div>
+                <a href="/user-account" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
+                    <i class="fa-regular fa-user text-gray-600 hover:text-primary cursor-pointer icon-hover text-lg"></i>
+                </a>
             </div>
             
             <!-- Wishlist -->
@@ -238,10 +240,10 @@
             </a>
             
             <!-- Cart -->
-            <div class="relative cursor-pointer" id="cart-trigger">
+            <a href="/cart" class="relative cursor-pointer">
                 <i class="fa-solid fa-cart-shopping text-gray-600 hover:text-primary icon-hover text-lg"></i>
                 <span class="absolute -top-2 -right-2 bg-primary text-yellow-100 text-xs w-5 h-5 rounded-full flex items-center justify-center" style="color: #fef3c7;">2</span>
-            </div>
+            </a>
             
             <!-- Mobile Menu Button -->
             <button class="lg:hidden text-gray-600 hover:text-primary text-xl">
@@ -251,123 +253,7 @@
     </div>
 </header>
 
-<!-- Cart Drawer Overlay & Sidebar -->
-<div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-[60] hidden transition-opacity duration-300 opacity-0"></div>
 
-<div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[70] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col font-sans">
-    <!-- Drawer Header -->
-    <div class="flex items-center justify-between p-5 border-b border-gray-100">
-        <h2 class="text-2xl font-serif text-[#c0863d]">Your cart</h2>
-        <button id="close-cart" class="text-gray-400 hover:text-black transition-colors focus:outline-none p-1">
-            <i class="fas fa-times text-xl"></i>
-        </button>
-    </div>
-
-    <!-- Drawer Content -->
-    <div class="flex-1 overflow-y-auto p-5 space-y-6">
-        <!-- Cart Item -->
-        <div class="flex gap-4">
-            <div class="w-20 h-20 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden border border-gray-100">
-                <img src="{{ asset('assets/collection/1.jpg') }}" alt="MUKH RANJAN" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-1 flex flex-col justify-between">
-                <div>
-                    <h3 class="font-medium text-sm text-gray-900 line-clamp-2 leading-snug">MUKH RANJAN™ DANT MANJAN</h3>
-                    <div class="mt-1 text-sm font-medium text-gray-900">Rs. 60.00</div>
-                    <div class="text-xs text-gray-500 mt-0.5">Item Total: Rs. 60.00</div>
-                </div>
-                <div class="flex items-center justify-between mt-3">
-                    <div class="flex items-center border border-gray-300 rounded">
-                        <button class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition">-</button>
-                        <span class="w-8 text-center text-sm text-gray-900">1</span>
-                        <button class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition">+</button>
-                    </div>
-                    <button class="text-xs text-gray-500 hover:text-red-500 underline decoration-1 underline-offset-2 transition-colors">Remove</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Add order notes -->
-        <div class="pt-2">
-            <button class="flex items-center text-sm text-gray-600 hover:text-[#c0863d] gap-2 transition-colors group">
-                <i class="fas fa-plus text-xs group-hover:scale-110 transition-transform"></i> Add order notes
-            </button>
-        </div>
-    </div>
-
-    <!-- Drawer Footer -->
-    <div class="border-t border-gray-100 p-5 bg-gray-50/50">
-        <div class="space-y-2 text-sm mb-4">
-            <div class="flex justify-between text-gray-600">
-                <span>Subtotal</span>
-                <span>Rs. 60.00</span>
-            </div>
-             <div class="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span>Rs. 60.00</span>
-            </div>
-            <div class="flex justify-between font-bold text-lg text-gray-900 pt-3 border-t border-gray-200 mt-2">
-                <span>Total</span>
-                <span>Rs. 120.00 INR</span>
-            </div>
-            <p class="text-xs text-gray-500 mt-2">Tax included. Shipping calculated at checkout.</p>
-        </div>
-        <button class="w-full bg-[#c0863d] text-white py-3.5 rounded-lg font-medium hover:bg-[#a87533] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200">
-            Checkout
-        </button>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cartTrigger = document.getElementById('cart-trigger');
-        const cartDrawer = document.getElementById('cart-drawer');
-        const cartOverlay = document.getElementById('cart-overlay');
-        const closeCartBtn = document.getElementById('close-cart');
-
-        function openCart() {
-            cartOverlay.classList.remove('hidden');
-            // Force reflow to enable transition
-            void cartOverlay.offsetWidth; 
-            cartOverlay.classList.remove('opacity-0');
-            
-            cartDrawer.classList.remove('translate-x-full');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        }
-
-        function closeCart() {
-            cartOverlay.classList.add('opacity-0');
-            cartDrawer.classList.add('translate-x-full');
-            document.body.style.overflow = '';
-            
-            setTimeout(() => {
-                cartOverlay.classList.add('hidden');
-            }, 300);
-        }
-
-        if(cartTrigger) {
-            cartTrigger.addEventListener('click', function(e) {
-                e.preventDefault();
-                openCart();
-            });
-        }
-
-        if(closeCartBtn) {
-            closeCartBtn.addEventListener('click', closeCart);
-        }
-
-        if(cartOverlay) {
-            cartOverlay.addEventListener('click', closeCart);
-        }
-        
-        // Close on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !cartDrawer.classList.contains('translate-x-full')) {
-                closeCart();
-            }
-        });
-    });
-</script>
 
 </body>
 </html>

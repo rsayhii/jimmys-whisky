@@ -54,16 +54,17 @@
                 </ul>
             </div>
 
-            <!-- PARCOS -->
+            <!-- All Pages -->
             <div>
                 <h4 class="text-xl font-bold tracking-wide uppercase text-black mb-4">
-                    Parcos
+                    Pages
                 </h4>
                 <ul class="space-y-2 text-md text-black">
                     <li><a href="#">About Us</a></li>
                     <li><a href="#">My Account</a></li>
                     <li><a href="#">My Orders</a></li>
-                    <li><a href="#">Luxezine</a></li>
+                    <li><a href="#">Membership</a></li>
+                    <li><a href="#">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -87,27 +88,24 @@
                     Contact Us
                 </h4>
 
-                <!-- <p class="text-md font-bold tracking-wide uppercase mb-4">
-                    Store Locator
-                </p> -->
-
-                <h4 class="text-md font-bold  uppercase text-black mb-2">
-                    Stay Updated!
-                </h4>
-
-                <p class="text-md text-black mb-3">
-                    Sign up for latest offers and promotion
-                </p>
-
-                <div class="flex border rounded-md overflow-hidden w-full max-w-lg">
-
-                    <input type="email"
-                           placeholder="Email Address"
-                           class="px-5 py-3 w-full text-md outline-none">
-                    <button class="px-4 text-sm font-semibold text-orange-500">
-                        Submit
-                    </button>
-                </div>
+                <ul class="space-y-4 text-md text-gray-700">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-[#c0863d]"></i>
+                        <span>
+                            Parcos House, <br>
+                            123 Luxury Lane, Mumbai, <br>
+                            Maharashtra 400001, India
+                        </span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone-alt text-[#c0863d]"></i>
+                        <span>+91 93830 02793</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-[#c0863d]"></i>
+                        <span>support@parcos.com</span>
+                    </li>
+                </ul>
             </div>
 
         </div>

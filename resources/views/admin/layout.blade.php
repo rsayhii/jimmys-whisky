@@ -10,6 +10,7 @@
 
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('assets/logo.png') }}">
 
     <style>
         .active {
@@ -50,6 +51,14 @@
             </li>
 
             <li>
+                <a href="/admin/categories"
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-tags"></i>
+                    Categories
+                </a>
+            </li>
+
+            <li>
                 <a href="/admin/orders"
                    class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
                     <i class="fas fa-shopping-cart"></i>
@@ -58,10 +67,34 @@
             </li>
 
             <li>
-                <a href="/admin/users"
+                <a href="/admin/membership"
                    class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
-                    <i class="fas fa-users"></i>
-                    Users
+                    <i class="fas fa-id-card"></i>
+                    Membership
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/refill-requests"
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-flask"></i>
+                    Refill Requests
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/coupons"
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-ticket-alt"></i>
+                    coupons
+                </a>
+            </li>
+
+            <li>
+                <a href="/admin/contact-queries"
+                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-envelope"></i>
+                    Contact Queries
                 </a>
             </li>
 
@@ -86,9 +119,13 @@
 
             <div class="flex items-center gap-4">
                 <span class="text-gray-600 text-sm">Hello, Admin</span>
-                <img src="https://i.pravatar.cc/40"
-                     class="w-10 h-10 rounded-full border" alt="Admin">
+
+                <div class="w-10 h-10 rounded-full bg-gray-800 text-white 
+                            flex items-center justify-center font-semibold">
+                    A
+                </div>
             </div>
+
         </header>
 
         <!-- Page Content -->
