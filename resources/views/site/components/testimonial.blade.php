@@ -67,7 +67,7 @@
 </head>
 <body>
 
-<section class="testimonial-section">
+<section class="testimonial-section pb-12">
     <div class="max-w-6xl mx-auto px-4 py-12 text-center">
         <h2 class="text-xl md:text-2xl font-light tracking-[0.25em] text-gray-800 uppercase mb-4">
             WHAT OUR CUSTOMERS HAVE TO SAY

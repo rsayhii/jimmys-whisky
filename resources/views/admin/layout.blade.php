@@ -14,7 +14,7 @@
 
     <style>
         .active {
-            background: linear-gradient(to right, #facc15, #f97316);
+            background: #ffeb9dff;
             color: #111827;
         }
     </style>
@@ -35,71 +35,71 @@
 
         <ul class="space-y-2 text-sm">
             <li>
-                <a href="/admin/dashboard"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.dashboard') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.dashboard') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-chart-line"></i>
                     Dashboard
                 </a>
             </li>
 
             <li>
-                <a href="/admin/products"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.products.products') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.products.*') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-box"></i>
                     Products
                 </a>
             </li>
 
             <li>
-                <a href="/admin/categories"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.categories.index') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.categories.*') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-tags"></i>
                     Categories
                 </a>
             </li>
 
             <li>
-                <a href="/admin/orders"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.orders.orders') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.orders.*') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-shopping-cart"></i>
                     Orders
                 </a>
             </li>
 
             <li>
-                <a href="/admin/membership"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.membership.membership') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.membership.membership', 'admin.membership.view-membership') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-id-card"></i>
                     Membership
                 </a>
             </li>
 
             <li>
-                <a href="/admin/refill-requests"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.membership.refill-requests') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.membership.refill-requests', 'admin.membership.view-refill-request') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-flask"></i>
                     Refill Requests
                 </a>
             </li>
 
             <li>
-                <a href="/admin/coupons"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.coupons') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.coupons') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-ticket-alt"></i>
                     coupons
                 </a>
             </li>
 
             <li>
-                <a href="/admin/contact-queries"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700 transition">
+                <a href="{{ route('admin.contact-query') }}"
+                   class="flex items-center gap-3 p-3 rounded-lg transition {{ request()->routeIs('admin.contact-query') ? 'active' : 'hover:bg-gray-700' }}">
                     <i class="fas fa-envelope"></i>
                     Contact Queries
                 </a>
             </li>
 
             <li class="pt-6 border-t border-gray-700">
-                <a href="/admin/login"
+                <a href="{{ route('admin.login') }}"
                    class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-600 transition text-red-400 hover:text-white">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout

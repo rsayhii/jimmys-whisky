@@ -23,134 +23,148 @@
     <!-- Wishlist Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 ">
         
-    
+        <!-- Empty State -->
+        <div id="empty-wishlist" class="hidden text-center py-20">
+            <div class="mb-6">
+                <i class="far fa-heart text-6xl text-gray-300"></i>
+            </div>
+            <p class="text-gray-500 text-lg mb-6">Your wishlist is currently empty.</p>
+            <a href="/collection" class="inline-block bg-[#c0863d] text-white px-8 py-3 rounded-full font-bold uppercase tracking-wider hover:bg-[#a87533] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                Explore Collection
+            </a>
+        </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            
-            <!-- Wishlist Item 1 -->
-            <div class="group relative">
-                <!-- Remove Button -->
-                <button class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
-                    <i class="fas fa-times text-sm"></i>
-                </button>
-                
-                <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
-                    <span class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full shadow-sm">New In</span>
-                    
-                    <a href="/single" class="block aspect-[4/5] overflow-hidden">
-                        <img src="{{ asset('assets/collection/1.jpg') }}" alt="Product" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        
-                        <!-- Quick Actions Overlay -->
-                        <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
-                            <button class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Add to Cart
-                            </button>
-                        </div>
-                    </a>
-                </div>
-                
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">Unisex</p>
-                    <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">ROYAL Non-Alcoholic Attar</h3>
-                    <div class="flex items-center gap-3 text-sm">
-                        <span class="font-bold text-gray-900">₹1,999</span>
-                        <span class="line-through text-gray-400 text-xs">₹2,500</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wishlist Item 2 -->
-            <div class="group relative">
-                <button class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
-                    <i class="fas fa-times text-sm"></i>
-                </button>
-                
-                <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
-                    <span class="absolute top-4 left-4 z-10 bg-[#c0863d] text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full shadow-md">Bestseller</span>
-                    
-                    <a href="/single" class="block aspect-[4/5] overflow-hidden">
-                        <img src="{{ asset('assets/collection/2.jpg') }}" alt="Product" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        
-                        <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
-                            <button class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Add to Cart
-                            </button>
-                        </div>
-                    </a>
-                </div>
-                
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">Woody</p>
-                    <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">SILENT STORM Perfume 100ML</h3>
-                    <div class="flex items-center gap-3 text-sm">
-                        <span class="font-bold text-gray-900">₹1,100</span>
-                        <span class="line-through text-gray-400 text-xs">₹2,200</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wishlist Item 3 -->
-            <div class="group relative">
-                <button class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
-                    <i class="fas fa-times text-sm"></i>
-                </button>
-                
-                <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
-                    <a href="/single" class="block aspect-[4/5] overflow-hidden">
-                        <img src="{{ asset('assets/collection/3.jpg') }}" alt="Product" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        
-                        <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
-                            <button class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Add to Cart
-                            </button>
-                        </div>
-                    </a>
-                </div>
-                
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">Aquatic</p>
-                    <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">BLU Perfume 90ML for Men</h3>
-                    <div class="flex items-center gap-3 text-sm">
-                        <span class="font-bold text-gray-900">₹2,400</span>
-                        <span class="line-through text-gray-400 text-xs">₹3,000</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wishlist Item 4 -->
-            <div class="group relative">
-                <button class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
-                    <i class="fas fa-times text-sm"></i>
-                </button>
-                
-                <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
-                    <span class="absolute top-4 left-4 z-10 bg-[#c0863d] text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full shadow-md">Bestseller</span>
-                    
-                    <a href="/single" class="block aspect-[4/5] overflow-hidden">
-                        <img src="{{ asset('assets/collection/4.jpg') }}" alt="Product" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        
-                        <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
-                            <button class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Add to Cart
-                            </button>
-                        </div>
-                    </a>
-                </div>
-                
-                <div class="space-y-1">
-                    <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">Fresh</p>
-                    <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">OCEAN MIST 100ML</h3>
-                    <div class="flex items-center gap-3 text-sm">
-                        <span class="font-bold text-gray-900">₹1,800</span>
-                        <span class="line-through text-gray-400 text-xs">₹2,000</span>
-                    </div>
-                </div>
-            </div>
-
+        <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+            <!-- Items will be injected here via JS -->
         </div>
     </div>
 </div>
 
+<script>
+    async function renderWishlist() {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const grid = document.getElementById('wishlist-grid');
+        const emptyState = document.getElementById('empty-wishlist');
+
+        if (wishlist.length === 0) {
+            grid.innerHTML = '';
+            grid.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            return;
+        }
+
+        const ids = wishlist.map(item => item.id);
+        
+        try {
+            const response = await fetch(`/products/batch?ids[]=${ids.join('&ids[]=')}`);
+            if (!response.ok) throw new Error('Failed to fetch products');
+            
+            const products = await response.json();
+            
+            if (products.length === 0) {
+                // Handle case where stored IDs no longer exist (e.g., deleted products)
+                // Optionally clean up localStorage here
+                grid.innerHTML = '';
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            grid.innerHTML = products.map(item => `
+                <div class="group relative">
+                    <!-- Remove Button -->
+                    <button onclick="removeFromWishlist(${item.id})" class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                    
+                    <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
+                        ${item.discount_price ? `<span class="absolute top-4 left-4 z-10 bg-red-500 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full shadow-sm">Sale</span>` : ''}
+                        
+                        <a href="/product/${item.id}" class="block aspect-[4/5] overflow-hidden">
+                            <img src="${item.image ? '/storage/' + item.image : '/assets/logo.png'}" alt="${item.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            
+                            <!-- Quick Actions Overlay -->
+                            <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
+                                <button onclick="event.preventDefault(); window.location.href='/product/${item.id}'" class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                                    <i class="fas fa-shopping-bag"></i> View Product
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">${item.brand || 'Brand'}</p>
+                        <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">${item.name}</h3>
+                        <div class="flex items-center gap-3 text-sm">
+                            ${item.discount_price 
+                                ? `<span class="font-bold text-gray-900">₹${new Intl.NumberFormat('en-IN').format(item.discount_price)}</span>
+                                   <span class="line-through text-gray-400 text-xs">₹${new Intl.NumberFormat('en-IN').format(item.price)}</span>`
+                                : `<span class="font-bold text-gray-900">₹${new Intl.NumberFormat('en-IN').format(item.price)}</span>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        } catch (error) {
+            console.error('Error loading wishlist:', error);
+            // Fallback to local data if fetch fails
+            renderFallbackWishlist(wishlist);
+        }
+    }
+
+    function renderFallbackWishlist(wishlist) {
+         const grid = document.getElementById('wishlist-grid');
+         const emptyState = document.getElementById('empty-wishlist');
+         
+         grid.classList.remove('hidden');
+         emptyState.classList.add('hidden');
+         
+         grid.innerHTML = wishlist.map(item => `
+            <div class="group relative">
+                <button onclick="removeFromWishlist(${item.id})" class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0" title="Remove">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+                <div class="relative overflow-hidden rounded-2xl bg-[#FAF7F2] mb-4">
+                     ${item.discount_price ? `<span class="absolute top-4 left-4 z-10 bg-red-500 text-white text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full shadow-sm">Sale</span>` : ''}
+                    <a href="/product/${item.id}" class="block aspect-[4/5] overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                         <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-10">
+                            <button onclick="event.preventDefault(); window.location.href='/product/${item.id}'" class="w-full bg-white/95 backdrop-blur-md text-gray-900 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#c0863d] hover:text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                                <i class="fas fa-shopping-bag"></i> View Product
+                            </button>
+                        </div>
+                    </a>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-[10px] font-bold tracking-widest text-[#c0863d] uppercase">${item.brand || 'Brand'}</p>
+                    <h3 class="font-serif text-lg text-gray-900 group-hover:text-[#c0863d] transition-colors truncate">${item.name}</h3>
+                     <div class="flex items-center gap-3 text-sm">
+                        ${item.discount_price 
+                            ? `<span class="font-bold text-gray-900">₹${new Intl.NumberFormat('en-IN').format(item.discount_price)}</span>
+                               <span class="line-through text-gray-400 text-xs">₹${new Intl.NumberFormat('en-IN').format(item.price)}</span>`
+                            : `<span class="font-bold text-gray-900">₹${new Intl.NumberFormat('en-IN').format(item.price)}</span>`
+                        }
+                    </div>
+                </div>
+            </div>
+         `).join('');
+    }
+
+    function removeFromWishlist(id) {
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        wishlist = wishlist.filter(item => item.id !== id);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        
+        renderWishlist();
+        window.dispatchEvent(new CustomEvent('wishlist-updated'));
+    }
+
+    document.addEventListener('DOMContentLoaded', renderWishlist);
+</script>
 
 @endsection

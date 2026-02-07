@@ -9,12 +9,9 @@
             <p class="text-sm text-gray-500 mt-1">Monitor and manage all your store orders.</p>
         </div>
         <div class="mt-4 md:mt-0 flex gap-3">
-             <button class="inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition-all duration-200">
-                <i class="fas fa-filter mr-2 text-gray-400"></i> Filter
-            </button>
-            <button class="inline-flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-800 shadow-sm transition-all duration-200">
+            <a href="{{ route('admin.orders.export') }}" class="inline-flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-800 shadow-sm transition-all duration-200">
                 <i class="fas fa-download mr-2"></i> Export Report
-            </button>
+            </a>
         </div>
     </div>
 
@@ -23,38 +20,38 @@
         <!-- Card 1 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow duration-200">
             <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Pending Payment</p>
-                <h3 class="text-3xl font-bold text-gray-900">56</h3>
+                <p class="text-sm font-medium text-gray-500 mb-1">Total Orders</p>
+                <h3 class="text-3xl font-bold text-gray-900">{{ \App\Models\Order::count() }}</h3>
+            </div>
+            <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
+                <i class="fas fa-shopping-bag text-blue-500 text-lg"></i>
+            </div>
+        </div>
+         <!-- Card 2 -->
+         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow duration-200">
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Pending</p>
+                <h3 class="text-3xl font-bold text-gray-900">{{ \App\Models\Order::where('status', 'pending')->count() }}</h3>
             </div>
             <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center">
                 <i class="fas fa-clock text-orange-500 text-lg"></i>
             </div>
         </div>
-        <!-- Card 2 -->
+        <!-- Card 3 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow duration-200">
             <div>
                 <p class="text-sm font-medium text-gray-500 mb-1">Completed</p>
-                <h3 class="text-3xl font-bold text-gray-900">12,689</h3>
+                <h3 class="text-3xl font-bold text-gray-900">{{ \App\Models\Order::where('status', 'delivered')->count() }}</h3>
             </div>
             <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center">
                 <i class="fas fa-check-circle text-green-500 text-lg"></i>
             </div>
         </div>
-        <!-- Card 3 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow duration-200">
-            <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Refunded</p>
-                <h3 class="text-3xl font-bold text-gray-900">124</h3>
-            </div>
-            <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
-                <i class="fas fa-undo text-blue-500 text-lg"></i>
-            </div>
-        </div>
         <!-- Card 4 -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between hover:shadow-md transition-shadow duration-200">
             <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Failed</p>
-                <h3 class="text-3xl font-bold text-gray-900">32</h3>
+                <p class="text-sm font-medium text-gray-500 mb-1">Cancelled</p>
+                <h3 class="text-3xl font-bold text-gray-900">{{ \App\Models\Order::where('status', 'cancelled')->count() }}</h3>
             </div>
             <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center">
                 <i class="fas fa-times-circle text-red-500 text-lg"></i>
@@ -75,6 +72,20 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 mr-4">
+                    <select id="bulk-status-select" class="border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-2 focus:ring-black focus:border-transparent outline-none cursor-pointer bg-white">
+                        <option value="">Bulk Actions</option>
+                        <option value="pending">Mark Pending</option>
+                        <option value="processing">Mark Processing</option>
+                        <option value="shipped">Mark Shipped</option>
+                        <option value="out_for_delivery">Mark Out for Delivery</option>
+                        <option value="delivered">Mark Delivered</option>
+                        <option value="cancelled">Mark Cancelled</option>
+                    </select>
+                    <button onclick="submitBulkUpdate()" class="px-4 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+                        Apply
+                    </button>
+                </div>
                 <select class="border border-gray-200 rounded-lg text-sm py-2.5 px-3 focus:ring-2 focus:ring-black focus:border-transparent outline-none cursor-pointer bg-white">
                     <option>Last 30 Days</option>
                     <option>Last 3 Months</option>
@@ -93,127 +104,151 @@
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-100">
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-10">
-                            <input type="checkbox" class="rounded border-gray-300 text-black focus:ring-black">
+                            <input type="checkbox" id="select-all" class="rounded border-gray-300 text-black focus:ring-black">
                         </th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Order ID</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Payment</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Payment Status</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Method</th>
+                        <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</th>
                         <th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @php
-                    $orders = [
-                        ['#9042', 'Wed Feb 01 2023', 'Chere Schofield', 'Pending', 'Ready to Pickup', '****3949'],
-                        ['#7189', 'Mon Jan 02 2023', 'Boycie Hartmann', 'Cancelled', 'Out for Delivery', '****@gmail.com'],
-                        ['#8114', 'Sat Apr 08 2023', 'Ulysses Goodlife', 'Cancelled', 'Ready to Pickup', '****4509'],
-                        ['#7064', 'Mon Mar 20 2023', 'Carmon Savidge', 'Cancelled', 'Delivered', '****@gmail.com'],
-                        ['#5911', 'Sun Aug 14 2022', 'Hilliard Merck', 'Failed', 'Out for Delivery', '****@gmail.com'],
-                        ['#6111', 'Sat Mar 11 2023', 'Chad Cock', 'Failed', 'Ready to Pickup', '****1014'],
-                        ['#8767', 'Mon Aug 29 2022', 'Lyndsey Dorey', 'Cancelled', 'Ready to Pickup', '****3432'],
-                        ['#7931', 'Mon Dec 26 2022', 'Octavius Whitchurch', 'Cancelled', 'Dispatched', '****8585'],
-                        ['#7280', 'Tue Dec 06 2022', 'Sibley Braithwaite', 'Paid', 'Ready to Pickup', '****8535'],
-                        ['#7094', 'Wed Jun 29 2022', 'Damara Figgins', 'Pending', 'Delivered', '****8321'],
-                    ];
-                    @endphp
-
-                    @foreach($orders as $order)
+                    @forelse($orders as $order)
                     <tr class="hover:bg-gray-50 transition-colors duration-150">
                         <td class="px-6 py-4">
-                            <input type="checkbox" class="rounded border-gray-300 text-black focus:ring-black">
+                            <input type="checkbox" name="ids[]" value="{{ $order->id }}" class="order-checkbox rounded border-gray-300 text-black focus:ring-black">
                         </td>
                         <td class="px-6 py-4">
-                            <span class="font-semibold text-gray-900">{{ $order[0] }}</span>
+                            <span class="font-semibold text-gray-900">{{ $order->order_number }}</span>
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">
-                            {{ $order[1] }}
+                            {{ $order->created_at->format('M d, Y') }}
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
-                                    {{ substr($order[2], 0, 1) }}
+                                    {{ substr($order->shipping_first_name, 0, 1) }}
                                 </div>
-                                <span class="text-sm font-medium text-gray-900">{{ $order[2] }}</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $order->shipping_first_name }} {{ $order->shipping_last_name }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            @if($order[3] == 'Pending')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-100">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-orange-500 mr-1.5"></span> {{ $order[3] }}
-                                </span>
-                            @elseif($order[3] == 'Failed')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span> {{ $order[3] }}
-                                </span>
-                            @elseif($order[3] == 'Paid')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span> {{ $order[3] }}
-                                </span>
-                            @else
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
-                                    {{ $order[3] }}
-                                </span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4">
-                            @php
-                                $statusClass = '';
-                                $statusTextClass = '';
-                                if($order[4] == 'Ready to Pickup') {
-                                    $statusClass = 'bg-blue-50 border-blue-100';
-                                    $statusTextClass = 'text-blue-700';
-                                } elseif($order[4] == 'Out for Delivery') {
-                                    $statusClass = 'bg-purple-50 border-purple-100';
-                                    $statusTextClass = 'text-purple-700';
-                                } elseif($order[4] == 'Dispatched') {
-                                    $statusClass = 'bg-yellow-50 border-yellow-100';
-                                    $statusTextClass = 'text-yellow-700';
-                                } elseif($order[4] == 'Delivered') {
-                                    $statusClass = 'bg-emerald-50 border-emerald-100';
-                                    $statusTextClass = 'text-emerald-700';
-                                }
+                             @php
+                                $paymentClass = match($order->payment_status) {
+                                    'paid' => 'bg-green-50 text-green-700 border-green-100',
+                                    'pending' => 'bg-orange-50 text-orange-700 border-orange-100',
+                                    'failed' => 'bg-red-50 text-red-700 border-red-100',
+                                    default => 'bg-gray-50 text-gray-700 border-gray-100'
+                                };
                             @endphp
-                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $statusClass }} {{ $statusTextClass }}">
-                                {{ $order[4] }}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border {{ $paymentClass }}">
+                                {{ ucfirst($order->payment_status) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">
-                            {{ $order[5] }}
+                        <td class="px-6 py-4">
+                            <form action="{{ route('admin.orders.update', $order->id) }}" method="POST" class="min-w-[140px]">
+                                @csrf
+                                @method('PATCH')
+                                <select name="status" onchange="this.form.submit()" 
+                                    class="w-full text-xs font-medium px-2.5 py-1.5 rounded-full border bg-white focus:outline-none focus:ring-2 focus:ring-offset-1
+                                    {{ match($order->status) {
+                                        'delivered' => 'border-emerald-200 text-emerald-700 bg-emerald-50 focus:ring-emerald-500',
+                                        'shipped', 'out_for_delivery' => 'border-blue-200 text-blue-700 bg-blue-50 focus:ring-blue-500',
+                                        'processing' => 'border-yellow-200 text-yellow-700 bg-yellow-50 focus:ring-yellow-500',
+                                        'cancelled' => 'border-red-200 text-red-700 bg-red-50 focus:ring-red-500',
+                                        default => 'border-gray-200 text-gray-700 bg-gray-50 focus:ring-gray-500'
+                                    } }}">
+                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                    <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                    <option value="out_for_delivery" {{ $order->status == 'out_for_delivery' ? 'selected' : '' }}>Out for Delivery</option>
+                                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900 font-medium">
+                            ₹{{ number_format($order->total_amount, 2) }}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="{{ route('admin.orders.show') }}" class="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-black hover:border-black transition-all duration-200">
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-black hover:border-black transition-all duration-200">
                                 <i class="fas fa-arrow-right text-gray-400 text-xs group-hover:text-white"></i>
                             </a>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="8" class="px-6 py-4 text-center text-gray-500">
+                            No orders found.
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
         <!-- Pagination -->
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-            <p class="text-sm text-gray-500">
-                Showing <span class="font-medium text-gray-900">1</span> to <span class="font-medium text-gray-900">10</span> of <span class="font-medium text-gray-900">100</span> entries
-            </p>
-            <div class="flex items-center gap-2">
-                <button class="px-3 py-1 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50" disabled>
-                    <i class="fas fa-chevron-left text-xs"></i>
-                </button>
-                <button class="px-3 py-1 text-sm bg-black text-white border border-black rounded-lg">1</button>
-                <button class="px-3 py-1 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">2</button>
-                <button class="px-3 py-1 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">3</button>
-                <span class="px-2 text-gray-400">...</span>
-                <button class="px-3 py-1 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600">10</button>
-                <button class="px-3 py-1 text-sm border border-gray-200 rounded-lg hover:bg-gray-50">
-                    <i class="fas fa-chevron-right text-xs"></i>
-                </button>
-            </div>
+        <div class="px-6 py-4 border-t border-gray-100">
+            {{ $orders->links() }}
         </div>
     </div>
-
 </div>
+
+<!-- Hidden Bulk Update Form -->
+<form id="bulk-update-form" action="{{ route('admin.orders.bulk_update') }}" method="POST" class="hidden">
+    @csrf
+    @method('PATCH')
+    <input type="hidden" name="status" id="bulk-status-input">
+    <div id="bulk-ids-container"></div>
+</form>
+
+<script>
+    // Select All Checkbox
+    document.getElementById('select-all').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.order-checkbox');
+        checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+    });
+
+    // Bulk Update Submission
+    function submitBulkUpdate() {
+        const status = document.getElementById('bulk-status-select').value;
+        if (!status) {
+            alert('Please select a status to apply.');
+            return;
+        }
+
+        const selectedIds = Array.from(document.querySelectorAll('.order-checkbox:checked')).map(cb => cb.value);
+        if (selectedIds.length === 0) {
+            alert('Please select at least one order.');
+            return;
+        }
+
+        if (!confirm(`Are you sure you want to update ${selectedIds.length} orders to ${status}?`)) {
+            return;
+        }
+
+        const form = document.getElementById('bulk-update-form');
+        const container = document.getElementById('bulk-ids-container');
+        
+        // Clear previous inputs
+        container.innerHTML = '';
+        
+        // Add status
+        document.getElementById('bulk-status-input').value = status;
+        
+        // Add IDs
+        selectedIds.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'ids[]';
+            input.value = id;
+            container.appendChild(input);
+        });
+
+        form.submit();
+    }
+</script>
 @endsection

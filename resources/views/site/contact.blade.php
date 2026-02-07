@@ -20,6 +20,20 @@
 </div>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+    <!-- Session Messages -->
+    @if (session('success'))
+        <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-5 mb-10 rounded-r-xl">
+            <p class="font-medium">{{ session('success') }}</p>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-5 mb-10 rounded-r-xl">
+            <p class="font-medium">{{ session('error') }}</p>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         
         <!-- Contact Information -->
@@ -94,35 +108,60 @@
         <!-- Contact Form -->
         <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
             <h2 class="text-2xl font-serif text-gray-900 mb-6">Send us a Message</h2>
-            <form action="#" method="POST" class="space-y-6">
+
+            <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
+                @csrf
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all" placeholder="John Doe">
+                        <input type="text" id="name" name="name" value="{{ old('name') }}"
+                               class="w-full px-4 py-3 rounded-lg border @error('name') border-red-500 @else border-gray-300 @enderror focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all"
+                               placeholder="John Doe" required>
+                        @error('name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
+
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all" placeholder="john@example.com">
+                        <input type="email" id="email" name="email" value="{{ old('email') }}"
+                               class="w-full px-4 py-3 rounded-lg border @error('email') border-red-500 @else border-gray-300 @enderror focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all"
+                               placeholder="john@example.com" required>
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
                 <div>
                     <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                    <select id="subject" name="subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all">
-                        <option value="">Select a subject</option>
-                        <option value="order">Order Inquiry</option>
-                        <option value="product">Product Information</option>
-                        <option value="return">Returns & Exchanges</option>
-                        <option value="other">Other</option>
+                    <select id="subject" name="subject"
+                            class="w-full px-4 py-3 rounded-lg border @error('subject') border-red-500 @else border-gray-300 @enderror focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all"
+                            required>
+                        <option value="" {{ old('subject') ? '' : 'selected' }}>Select a subject</option>
+                        <option value="order"   {{ old('subject') === 'order'   ? 'selected' : '' }}>Order Inquiry</option>
+                        <option value="product" {{ old('subject') === 'product' ? 'selected' : '' }}>Product Information</option>
+                        <option value="return"  {{ old('subject') === 'return'  ? 'selected' : '' }}>Returns & Exchanges</option>
+                        <option value="other"   {{ old('subject') === 'other'   ? 'selected' : '' }}>Other</option>
                     </select>
+                    @error('subject')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                    <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all" placeholder="How can we help you?"></textarea>
+                    <textarea id="message" name="message" rows="5"
+                              class="w-full px-4 py-3 rounded-lg border @error('message') border-red-500 @else border-gray-300 @enderror focus:ring-2 focus:ring-[#c0863d] focus:border-transparent outline-none transition-all"
+                              placeholder="How can we help you?" required>{{ old('message') }}</textarea>
+                    @error('message')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <button type="button" class="w-full bg-[#c0863d] text-white font-medium py-3.5 rounded-lg hover:bg-[#a87533] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200">
+                <button type="submit"
+                        class="w-full bg-[#c0863d] text-white font-medium py-3.5 rounded-lg hover:bg-[#a87533] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200">
                     Send Message
                 </button>
             </form>
@@ -133,12 +172,7 @@
 <!-- Map Section -->
 <div class="w-full h-96 bg-gray-200">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.7327092329385!2d72.825833!3d19.075983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDA0JzMzLjUiTiA3MsKwNDknMzMuMCJF!5e0!3m2!1sen!2sin!4v1635764839000!5m2!1sen!2sin" 
-            width="100%" 
-            height="100%" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-    </iframe>
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
 </div>
 
 @endsection

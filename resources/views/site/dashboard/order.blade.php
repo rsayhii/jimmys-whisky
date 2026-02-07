@@ -16,53 +16,7 @@
         <div class="flex flex-col lg:flex-row gap-8">
             
             <!-- Sidebar -->
-            <aside class="w-full lg:w-1/4">
-                <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-xl font-bold text-gray-600">
-                            RJ
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900">Rahul Jain</h3>
-                            <p class="text-sm text-gray-500">rahul.jain@example.com</p>
-                        </div>
-                    </div>
-
-                    <nav class="space-y-1">
-                        <a href="/user-account" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-user w-5"></i>
-                            My Account
-                        </a>
-                        <a href="/user-order" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-black text-white font-medium transition">
-                            <i class="fas fa-box w-5"></i>
-                            My Orders
-                        </a>
-                        <a href="/user-membership" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-crown w-5"></i>
-                            My Membership
-                        </a>
-                        <a href="/user-refill-requests" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-sync w-5"></i>
-                            Refill Requests
-                        </a>
-                        <a href="/wishlist" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-heart w-5"></i>
-                            Wishlist
-                        </a>
-                        <a href="/user-address" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-map-marker-alt w-5"></i>
-                            Addresses
-                        </a>
-                         <form method="POST" action="#" class="mt-4 pt-4 border-t border-gray-100">
-                            @csrf
-                            <button type="submit" class="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition">
-                                <i class="fas fa-sign-out-alt w-5"></i>
-                                Log Out
-                            </button>
-                        </form>
-                    </nav>
-                </div>
-            </aside>
+            @include('site.dashboard.sidebar')
 
             <!-- Main Content -->
             <div class="w-full lg:w-3/4 space-y-6">
@@ -89,104 +43,91 @@
                 <!-- Orders List -->
                 <div class="space-y-4">
                     
-                    <!-- Order Item 1 -->
+                    @forelse($orders as $order)
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                         <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center text-sm">
                             <div class="flex gap-8">
                                 <div>
                                     <p class="text-gray-500 mb-1">Order Placed</p>
-                                    <p class="font-medium text-gray-900">24 Oct 2023</p>
+                                    <p class="font-medium text-gray-900">{{ $order->created_at->format('d M Y') }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 mb-1">Total Amount</p>
-                                    <p class="font-medium text-gray-900">₹4,999</p>
+                                    <p class="font-medium text-gray-900">₹{{ number_format($order->total_amount, 2) }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-500 mb-1">Order ID</p>
-                                    <p class="font-medium text-gray-900">#ORD-29384</p>
+                                    <p class="font-medium text-gray-900">#{{ $order->order_number }}</p>
                                 </div>
                             </div>
-                            <button class="text-indigo-600 font-medium hover:underline">View Invoice</button>
+                            <a href="{{ route('site.dashboard.invoice', $order->id) }}" target="_blank" class="text-indigo-600 font-medium hover:underline">View Invoice</a>
                         </div>
                         
                         <div class="p-6">
-                            <div class="flex flex-col sm:flex-row gap-6">
+                            @foreach($order->items as $item)
+                            <div class="flex flex-col sm:flex-row gap-6 {{ !$loop->last ? 'mb-6 border-b border-gray-100 pb-6' : '' }}">
                                 <div class="w-24 h-24 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=300&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover">
+                                    @if($item->product && $item->product->image)
+                                        <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover">
+                                    @else
+                                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=300&auto=format&fit=crop" alt="{{ $item->product_name }}" class="w-full h-full object-cover">
+                                    @endif
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex justify-between items-start">
                                         <div>
-                                            <h3 class="font-bold text-gray-900 text-lg">Oud Wood Intense</h3>
-                                            <p class="text-gray-500 text-sm">50ml • Eau de Parfum</p>
+                                            <h3 class="font-bold text-gray-900 text-lg">{{ $item->product_name }}</h3>
+                                            @if($item->product)
+                                            <p class="text-gray-500 text-sm">{{ $item->product->concentration ?? '' }}</p>
+                                            @endif
                                         </div>
                                         <div class="text-right">
-                                            <p class="font-bold text-gray-900">₹4,999</p>
-                                            <p class="text-xs text-gray-400">Qty: 1</p>
+                                            <p class="font-bold text-gray-900">₹{{ number_format($item->price, 2) }}</p>
+                                            <p class="text-xs text-gray-400">Qty: {{ $item->quantity }}</p>
                                         </div>
                                     </div>
                                     
                                     <div class="mt-4 flex flex-wrap items-center gap-4">
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                            Delivered on 26 Oct
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium 
+                                            {{ $order->status == 'delivered' ? 'bg-green-100 text-green-700' : 
+                                               ($order->status == 'cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-800') }}">
+                                            <span class="w-1.5 h-1.5 rounded-full 
+                                                {{ $order->status == 'delivered' ? 'bg-green-500' : 
+                                                   ($order->status == 'cancelled' ? 'bg-red-500' : 'bg-yellow-500 animate-pulse') }}"></span>
+                                            {{ ucfirst($order->status) }}
                                         </span>
-                                        <a href="/single" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">Write a Review</a>
-                                        <button class="text-sm text-gray-600 hover:text-black font-medium border-l border-gray-200 pl-4">Buy Again</button>
+                                        @if($item->product)
+                                            @php
+                                                $hasReview = $order->reviews->where('product_id', $item->product->id)->first();
+                                            @endphp
+                                            
+                                            @if($hasReview)
+                                            <div class="flex text-[#c0863d] text-xs">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <i class="{{ $i <= $hasReview->rating ? 'fas' : 'far' }} fa-star"></i>
+                                                @endfor
+                                                <span class="ml-2 text-gray-400">Reviewed</span>
+                                            </div>
+                                            @else
+                                            <a href="{{ route('product.show', ['id' => $item->product->id, 'order_id' => $order->id]) }}#reviews" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">Write a Review</a>
+                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
+                            @endforeach
                         </div>
                     </div>
-
-                    <!-- Order Item 2 -->
-                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center text-sm">
-                            <div class="flex gap-8">
-                                <div>
-                                    <p class="text-gray-500 mb-1">Order Placed</p>
-                                    <p class="font-medium text-gray-900">20 Oct 2023</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 mb-1">Total Amount</p>
-                                    <p class="font-medium text-gray-900">₹2,499</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 mb-1">Order ID</p>
-                                    <p class="font-medium text-gray-900">#ORD-29301</p>
-                                </div>
-                            </div>
-                            <button class="text-indigo-600 font-medium hover:underline">View Invoice</button>
+                    @empty
+                    <div class="bg-white rounded-xl shadow-sm p-8 text-center border border-gray-100">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shopping-bag text-gray-400 text-xl"></i>
                         </div>
-                        
-                        <div class="p-6">
-                            <div class="flex flex-col sm:flex-row gap-6">
-                                <div class="w-24 h-24 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=300&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover">
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 class="font-bold text-gray-900 text-lg">Rose Prick</h3>
-                                            <p class="text-gray-500 text-sm">30ml • Eau de Parfum</p>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="font-bold text-gray-900">₹2,499</p>
-                                            <p class="text-xs text-gray-400">Qty: 1</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mt-4 flex flex-wrap items-center gap-4">
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-                                            Out for Delivery
-                                        </span>
-                                      
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">No orders yet</h3>
+                        <p class="text-gray-500 mb-6">You haven't placed any orders yet. Start shopping to fill your collection.</p>
+                        <a href="/" class="inline-block bg-[#c0863d] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#a87533] transition">Start Shopping</a>
                     </div>
+                    @endforelse
 
                 </div>
 

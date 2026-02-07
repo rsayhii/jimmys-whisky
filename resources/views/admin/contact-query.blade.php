@@ -11,6 +11,13 @@
         </div>
     </div>
 
+    <!-- Session Messages -->
+    @if (session('success'))
+        <div class="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-r">
+            <p class="font-medium">{{ session('success') }}</p>
+        </div>
+    @endif
+
     <!-- Queries Table -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
@@ -21,47 +28,10 @@
                         <th class="px-6 py-4 font-medium">Customer</th>
                         <th class="px-6 py-4 font-medium">Subject</th>
                         <th class="px-6 py-4 font-medium">Date</th>
-                        <th class="px-6 py-4 font-medium">Status</th>
                         <th class="px-6 py-4 font-medium text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    {{-- Mock Data --}}
-                    @php
-                        $queries = [
-                            (object)[
-                                'id' => 101, 
-                                'name' => 'Amit Sharma', 
-                                'email' => 'amit.sharma@example.com',
-                                'phone' => '+91 9876543210',
-                                'subject' => 'Order delivery delay', 
-                                'message' => 'Hi, I placed an order #ORD-4582 two weeks ago and still haven\'t received it. Can you please check?',
-                                'created_at' => '2023-10-25',
-                                'status' => 'New'
-                            ],
-                            (object)[
-                                'id' => 102, 
-                                'name' => 'Priya Patel', 
-                                'email' => 'priya.p@example.com',
-                                'phone' => '+91 9898989898',
-                                'subject' => 'Bulk order inquiry', 
-                                'message' => 'Hello, we are interested in purchasing your gift sets for a corporate event. Do you offer bulk discounts?',
-                                'created_at' => '2023-10-24',
-                                'status' => 'Read'
-                            ],
-                            (object)[
-                                'id' => 103, 
-                                'name' => 'Rahul Verma', 
-                                'email' => 'rahul.v@example.com',
-                                'phone' => '+91 9123456780',
-                                'subject' => 'Product authenticity', 
-                                'message' => 'I bought a perfume from a third party store. How can I verify if it is authentic?',
-                                'created_at' => '2023-10-22',
-                                'status' => 'Replied'
-                            ],
-                        ];
-                    @endphp
-
                     @forelse($queries as $query)
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4 text-gray-900 font-semibold">#{{ $query->id }}</td>
@@ -69,35 +39,26 @@
                             <div class="font-medium text-gray-900">{{ $query->name }}</div>
                             <div class="text-xs text-gray-500">{{ $query->email }}</div>
                         </td>
-                        <td class="px-6 py-4 font-medium text-gray-900">{{ $query->subject }}</td>
-                        <td class="px-6 py-4 text-gray-500">{{ $query->created_at }}</td>
-                        <td class="px-6 py-4">
-                            @if($query->status === 'New')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-blue-600"></span> New
-                                </span>
-                            @elseif($query->status === 'Read')
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-gray-600"></span> Read
-                                </span>
-                            @else
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-green-600"></span> Replied
-                                </span>
-                            @endif
+                        <td class="px-6 py-4 font-medium text-gray-900">
+                            {{ ucfirst($query->subject) }}
                         </td>
+                        <td class="px-6 py-4 text-gray-500">{{ $query->created_at->format('M d, Y') }}</td>
                         <td class="px-6 py-4 text-right space-x-2">
                             <button onclick='openViewModal(@json($query))' class="p-2 text-gray-400 hover:text-[#c0863d] transition-colors" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="p-2 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <form action="{{ route('admin.contact-query.destroy', $query->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this query?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-2 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-500">
                             <div class="flex flex-col items-center justify-center">
                                 <i class="fas fa-inbox text-4xl text-gray-300 mb-3"></i>
                                 <p>No queries found.</p>
@@ -110,13 +71,11 @@
         </div>
         
         <!-- Pagination -->
-        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <span class="text-sm text-gray-500">Showing 1 to 3 of 3 results</span>
-            <div class="flex gap-2">
-                <button class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>Previous</button>
-                <button class="px-3 py-1 text-sm border border-gray-300 rounded-md bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>Next</button>
-            </div>
+        @if($queries->hasPages())
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+            {{ $queries->links() }}
         </div>
+        @endif
     </div>
 
 </div>
@@ -151,7 +110,6 @@
                             <h4 class="text-base font-bold text-gray-900" id="view-name">Amit Sharma</h4>
                             <div class="text-sm text-gray-500 flex flex-col sm:flex-row sm:gap-4 mt-1">
                                 <span class="flex items-center gap-1"><i class="fas fa-envelope text-xs"></i> <span id="view-email">amit@example.com</span></span>
-                                <span class="flex items-center gap-1"><i class="fas fa-phone text-xs"></i> <span id="view-phone">+91 9876543210</span></span>
                             </div>
                         </div>
                         <div class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded" id="view-date">2023-10-25</div>
@@ -184,9 +142,13 @@
         // Populate Data
         document.getElementById('view-name').textContent = data.name;
         document.getElementById('view-email').textContent = data.email;
-        document.getElementById('view-phone').textContent = data.phone;
-        document.getElementById('view-date').textContent = data.created_at;
-        document.getElementById('view-subject').textContent = data.subject;
+        // Phone is removed from schema
+        
+        // Format date
+        const date = new Date(data.created_at);
+        document.getElementById('view-date').textContent = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        
+        document.getElementById('view-subject').textContent = data.subject.charAt(0).toUpperCase() + data.subject.slice(1);
         document.getElementById('view-message').textContent = data.message;
         
         // Initials

@@ -51,10 +51,6 @@
             
             <!-- Content -->
             <div class="text-center lg:text-left space-y-8">
-                <!-- <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-[#c0863d]/30 bg-[#c0863d]/5 backdrop-blur-sm animate-fade-in-up">
-                    <span class="w-2 h-2 rounded-full bg-[#c0863d] animate-pulse"></span>
-                    <span class="text-[#c0863d] text-xs font-semibold tracking-[0.2em] uppercase">Private Invitation • 142 Slots Left</span>
-                </div> -->
                 
                 <div class="mt-4 inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-[#c0863d]/40 shadow-sm">
                     <i class="fas fa-gift text-[#c0863d]"></i>
@@ -78,10 +74,10 @@
                 <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start pt-4">
                     <button class="group relative px-8 py-4 bg-gradient-to-r from-[#c0863d] to-[#a87533] text-white rounded-none overflow-hidden transition-all hover:shadow-[0_0_30px_rgba(192,134,61,0.3)]">
                         <span class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></span>
-                        <span class="relative font-medium tracking-wide flex items-center gap-3">
+                        <a href="/user-membership" class="relative font-medium tracking-wide flex items-center gap-3">
                             CLAIM MEMBERSHIP
                             <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
-                        </span>
+                        </a>
                     </button>
                     <button class="px-8 py-4 border border-white/10 text-gray-300 hover:text-white hover:border-[#c0863d]/50 hover:bg-[#c0863d]/5 transition-all tracking-wide font-light">
                         DISCOVER BENEFITS
@@ -280,7 +276,7 @@
     .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
 </style>
 
-<div class="bg-white pt-2 pb-16">
+<div class="bg-gray-50 pt-2 pb-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
             <span class="text-[#c0863d] text-xs font-bold tracking-[0.2em] uppercase">FAQs</span>

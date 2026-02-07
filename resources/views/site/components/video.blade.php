@@ -277,7 +277,7 @@
                 dots: true,
                 autoplay: true,
                 autoplayTimeout: 4000,
-                autoplayHoverPause: false,
+                autoplayHoverPause: true,
                 responsive: {
                     0: {
                         items: 1,
@@ -292,51 +292,30 @@
                         stagePadding: 50
                     }
                 },
-                onInitialized: function () {
-                    // Play the first video when carousel initializes
-                    playActiveVideo();
-                },
-                onTranslate: function () {
-                    // Pause all videos when carousel starts moving
-                    pauseAllVideos();
-                },
-                onTranslated: function () {
-                    // Play the active video after carousel finishes moving
-                    playActiveVideo();
-                }
+                onInitialized: updateVideoState,
+                onTranslated: updateVideoState,
+                onDragged: updateVideoState
             });
 
-            // Function to play the active video
-            function playActiveVideo() {
-                var activeItem = $(".owl-item.active.center .testimonial-video");
-                if (activeItem.length) {
-                    activeItem[0].play();
-                } else {
-                    // Fallback if center class is not available
-                    var activeIndex = $("#testimonial-carousel").find(".owl-item.active").index();
-                    $("#testimonial-carousel").find(".testimonial-video").eq(activeIndex)[0].play();
-                }
-            }
-
-            // Function to pause all videos
-            function pauseAllVideos() {
-                $("#testimonial-carousel .testimonial-video").each(function () {
+            function updateVideoState() {
+                // First pause all videos to ensure hidden ones don't play
+                $(".testimonial-video").each(function() {
                     this.pause();
                 });
-            }
 
-            // Pause video when hovering over it
-            $(".testimonial-video").hover(
-                function () {
-                    this.pause();
-                },
-                function () {
-                    // Only play if this is the active video
-                    if ($(this).closest(".owl-item").hasClass("active")) {
-                        this.play();
+                // Then play only the videos in active items
+                $(".owl-item.active .testimonial-video").each(function() {
+                    var video = this;
+                    var playPromise = video.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            // Auto-play was prevented
+                            console.log("Video play prevented: ", error);
+                        });
                     }
-                }
-            );
+                });
+            }
         });
     </script>
 </body>

@@ -1,43 +1,26 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="p-0 bg-[#f8f7fa] min-h-screen font-sans text-[#6f6b7d]">
+<div class="p-0 bg-[#f8f7fa] min-h-screen font-sans text-[#6f6b7d]" x-data="{ showFilters: {{ request('status') || request('category') || request('stock_status') ? 'true' : 'false' }} }">
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <select class="w-full border border-gray-200 rounded-lg p-3 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-gray-400">
-            <option selected disabled>Status</option>
-            <option value="publish">Publish</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="inactive">Inactive</option>
-        </select>
-        <select class="w-full border border-gray-200 rounded-lg p-3 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-gray-400">
-            <option selected disabled>Category</option>
-            <option value="accessories">Accessories</option>
-            <option value="home-decor">Home Decor</option>
-            <option value="shoes">Shoes</option>
-        </select>
-        <select class="w-full border border-gray-200 rounded-lg p-3 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-gray-400">
-            <option selected disabled>Stock</option>
-            <option value="in-stock">In Stock</option>
-            <option value="out-stock">Out of Stock</option>
-        </select>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-        
-        <div class="p-4 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-gray-100">
-            <div class="relative w-full md:w-64">
-                <input type="text" id="tableSearch" placeholder="Search Product" class="w-full border border-gray-200 rounded-md pl-4 pr-4 py-2 text-sm focus:outline-none focus:border-[#7367f0]">
-            </div>
+    <!-- Header & Actions -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div class="p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <!-- Search -->
+            <form action="{{ route('admin.products.products') }}" method="GET" class="w-full md:w-1/2">
+                <div class="relative w-full">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Product..." class="w-full border border-gray-200 rounded-md pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[#7367f0]">
+                    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <!-- Preserve other filters -->
+                    @if(request('status')) <input type="hidden" name="status" value="{{ request('status') }}"> @endif
+                    @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
+                    @if(request('stock_status')) <input type="hidden" name="stock_status" value="{{ request('stock_status') }}"> @endif
+                </div>
+            </form>
             
             <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                <select class="border border-gray-200 rounded-md px-3 py-2 text-sm outline-none">
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
-                </select>
-                <button onclick="exportToCSV()" class="flex items-center gap-2 border border-gray-200 text-gray-500 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition active:scale-95">
-                    <i class="fa-solid fa-upload text-xs"></i> Export
+                <button @click="showFilters = !showFilters" :class="{'bg-gray-100 text-[#7367f0]': showFilters}" class="flex hidden items-center gap-2 border border-gray-200 text-gray-500 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition">
+                    <i class="fa-solid fa-filter"></i> Filters
                 </button>
                 <a href="{{ route('admin.products.create') }}" class="bg-[#7367f0] text-white px-5 py-2 rounded-md text-sm font-medium hover:shadow-lg transition">
                     <span class="text-lg leading-none mr-1">+</span> Add Product
@@ -45,6 +28,39 @@
             </div>
         </div>
 
+        <!-- Filters Section -->
+        <div x-show="showFilters" x-transition class="border-t border-gray-100 bg-gray-50 p-4">
+            <form action="{{ route('admin.products.products') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
+                
+                <select name="status" onchange="this.form.submit()" class="w-full border border-gray-200 rounded-lg p-2.5 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-sm text-gray-600">
+                    <option value="">All Status</option>
+                    <option value="publish" {{ request('status') == 'publish' ? 'selected' : '' }}>Publish</option>
+                    <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
+                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                </select>
+
+                <select name="category" onchange="this.form.submit()" class="w-full border border-gray-200 rounded-lg p-2.5 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-sm text-gray-600">
+                    <option value="">All Categories</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>{{ $category }}</option>
+                    @endforeach
+                </select>
+
+                <select name="stock_status" onchange="this.form.submit()" class="w-full border border-gray-200 rounded-lg p-2.5 bg-white outline-none focus:ring-1 focus:ring-[#7367f0] text-sm text-gray-600">
+                    <option value="">All Stock Status</option>
+                    <option value="in-stock" {{ request('stock_status') == 'in-stock' ? 'selected' : '' }}>In Stock</option>
+                    <option value="out-stock" {{ request('stock_status') == 'out-stock' ? 'selected' : '' }}>Out of Stock</option>
+                </select>
+
+                <a href="{{ route('admin.products.products') }}" class="flex items-center justify-center gap-2 border border-red-200 text-red-500 bg-white hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-medium transition">
+                    <i class="fa-solid fa-times"></i> Clear Filters
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table id="productTable" class="w-full text-left whitespace-nowrap">
                 <thead class="bg-[#fcfcfd] text-[11px] uppercase tracking-wider text-gray-500 font-bold border-b">
@@ -61,61 +77,71 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @php
-                        $products = [
-                            ['name' => 'Zamit', 'brand' => 'Hoeger-Powlowski', 'cat' => 'Accessories', 'sku' => '55860', 'price' => 22500, 'qty' => 332, 'status' => 'publish', 'stock' => 'in-stock'],
-                            ['name' => 'Span', 'brand' => 'Hane-Romaguera', 'cat' => 'Home Decor', 'sku' => '55666', 'price' => 45999, 'qty' => 898, 'status' => 'scheduled', 'stock' => 'in-stock'],
-                            ['name' => 'Tampflex', 'brand' => 'Romaguera', 'cat' => 'Accessories', 'sku' => '29438', 'price' => 12450, 'qty' => 908, 'status' => 'inactive', 'stock' => 'out-stock'],
-                        ];
-                    @endphp
-
-                    @foreach($products as $product)
+                    @forelse($products as $product)
                     <tr class="hover:bg-gray-50 transition">
                         <td class="px-6 py-4"><input type="checkbox" class="rounded border-gray-300"></td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-lg">📦</div>
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-10 h-10 rounded object-cover">
+                                @else
+                                    <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-lg">📦</div>
+                                @endif
                                 <div class="flex flex-col">
-                                    <span class="text-sm font-bold text-gray-700">{{ $product['name'] }}</span>
-                                    <span class="text-[11px] text-gray-400">{{ $product['brand'] }}</span>
+                                    <span class="text-sm font-bold text-gray-700">{{ $product->name }}</span>
+                                    <span class="text-[11px] text-gray-400">{{ $product->brand }}</span>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <select class="bg-transparent border-none text-sm focus:ring-0 cursor-pointer text-gray-600 outline-none">
-                                <option value="Accessories" {{ $product['cat'] == 'Accessories' ? 'selected' : '' }}>Accessories</option>
-                                <option value="Home Decor" {{ $product['cat'] == 'Home Decor' ? 'selected' : '' }}>Home Decor</option>
-                            </select>
+                            <span class="text-sm text-gray-600">{{ $product->category }}</span>
                         </td>
                         <td class="px-6 py-4">
-                            <select onchange="updateStockUI(this)" class="text-[12px] font-medium px-2 py-1 rounded border border-gray-100 outline-none cursor-pointer {{ $product['stock'] == 'out-stock' ? 'text-red-500 border-red-100' : 'text-gray-600' }}">
-                                <option value="in-stock" {{ $product['stock'] == 'in-stock' ? 'selected' : '' }}>In Stock</option>
-                                <option value="out-stock" {{ $product['stock'] == 'out-stock' ? 'selected' : '' }}>Out of Stock</option>
-                            </select>
+                            <span class="text-[12px] font-medium px-2 py-1 rounded border border-gray-100 {{ ($product->qty == 0 || $product->stock_status == 'out-stock') ? 'text-red-500 border-red-100' : 'text-gray-600' }}">
+                                {{ ($product->qty == 0 || $product->stock_status == 'out-stock') ? 'Out of Stock' : 'In Stock' }}
+                            </span>
                         </td>
-                        <td class="px-6 py-4 text-sm">{{ $product['sku'] }}</td>
-                        <td class="px-6 py-4 text-sm font-semibold text-gray-700">₹{{ number_format($product['price'], 2) }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $product['qty'] }}</td>
+                        <td class="px-6 py-4 text-sm">{{ $product->sku }}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-gray-700">
+                            @if($product->discount_price && $product->discount_price < $product->price)
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-gray-400 line-through">₹{{ number_format($product->price, 2) }}</span>
+                                    <span class="text-[#7367f0]">₹{{ number_format($product->discount_price, 2) }}</span>
+                                </div>
+                            @else
+                                ₹{{ number_format($product->price, 2) }}
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">{{ $product->qty }}</td>
                         <td class="px-6 py-4">
                             @php
                                 $statusClasses = ['publish' => 'bg-green-100 text-green-600', 'scheduled' => 'bg-orange-100 text-orange-600', 'inactive' => 'bg-red-100 text-red-500'];
                             @endphp
-                            <select onchange="updateStatusUI(this)" class="text-[10px] font-bold uppercase px-2 py-1 rounded border-none outline-none cursor-pointer {{ $statusClasses[$product['status']] }}">
-                                <option value="publish" {{ $product['status'] == 'publish' ? 'selected' : '' }}>Publish</option>
-                                <option value="scheduled" {{ $product['status'] == 'scheduled' ? 'selected' : '' }}>Scheduled</option>
-                                <option value="inactive" {{ $product['status'] == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                            </select>
+                            <span class="text-[10px] font-bold uppercase px-2 py-1 rounded {{ $statusClasses[$product->status] ?? '' }}">
+                                {{ ucfirst($product->status) }}
+                            </span>
                         </td>
                         <td class="px-6 py-4 text-center text-gray-400">
                             <div class="flex items-center justify-center gap-3">
-                                <a href="{{ route('admin.products.edit') }}" class="hover:text-[#7367f0] transition"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <button class="hover:text-gray-600 transition"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                <a href="{{ route('admin.products.edit', $product->id) }}" class="hover:text-[#7367f0] transition"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="hover:text-red-500 transition"><i class="fa-solid fa-trash"></i></button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 text-center text-gray-500">No products found.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="mt-4 px-4 pb-4">
+            {{ $products->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
@@ -126,15 +152,17 @@
             <h3 class="text-lg font-bold">Add New Product</h3>
             <button onclick="toggleModal('addProductModal')" class="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
-        <form id="productForm">
+        <form action="{{ route('admin.products.store') }}" method="POST">
+            @csrf
             <div class="space-y-4">
-                <input type="text" placeholder="Product Name" class="w-full border p-2 rounded outline-none focus:border-[#7367f0]">
-                <input type="text" placeholder="Price (INR)" class="w-full border p-2 rounded outline-none focus:border-[#7367f0]">
-                <select class="w-full border p-2 rounded outline-none focus:border-[#7367f0]">
-                    <option>Select Category</option>
-                    <option>Accessories</option>
-                    <option>Home Decor</option>
+                <input type="text" name="name" placeholder="Product Name" class="w-full border p-2 rounded outline-none focus:border-[#7367f0]" required>
+                <input type="number" name="price" placeholder="Price (INR)" class="w-full border p-2 rounded outline-none focus:border-[#7367f0]" step="0.01" required>
+                <select name="category" class="w-full border p-2 rounded outline-none focus:border-[#7367f0]">
+                    <option value="">Select Category</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Home Decor">Home Decor</option>
                 </select>
+                <!-- Hidden defaults or additional fields could go here -->
             </div>
             <div class="mt-6 flex justify-end gap-3">
                 <button type="button" onclick="toggleModal('addProductModal')" class="px-4 py-2 text-gray-500 border rounded">Cancel</button>
@@ -151,54 +179,5 @@
         modal.classList.toggle('hidden');
         modal.classList.toggle('flex');
     }
-
-    // 2. Export to CSV Logic
-    function exportToCSV() {
-        let rows = document.querySelectorAll("#productTable tr");
-        let csv = [];
-        for (let i = 0; i < rows.length; i++) {
-            let row = [], cols = rows[i].querySelectorAll("td, th");
-            for (let j = 1; j < cols.length - 1; j++) {
-                let val = cols[j].querySelector('select') ? cols[j].querySelector('select').value : cols[j].innerText;
-                row.push('"' + val.trim() + '"');
-            }
-            csv.push(row.join(","));
-        }
-        let blob = new Blob([csv.join("\n")], { type: "text/csv" });
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "products_list.csv";
-        a.click();
-    }
-
-    // 3. Status UI Logic
-    function updateStatusUI(select) {
-        const val = select.value;
-        select.classList.remove('bg-green-100', 'text-green-600', 'bg-orange-100', 'text-orange-600', 'bg-red-100', 'text-red-500');
-        if(val === 'publish') select.classList.add('bg-green-100', 'text-green-600');
-        else if(val === 'scheduled') select.classList.add('bg-orange-100', 'text-orange-600');
-        else if(val === 'inactive') select.classList.add('bg-red-100', 'text-red-500');
-    }
-
-    // 4. Stock UI Logic
-    function updateStockUI(select) {
-        if(select.value === 'out-stock') {
-            select.classList.add('text-red-500', 'border-red-100');
-        } else {
-            select.classList.remove('text-red-500', 'border-red-100');
-            select.classList.add('text-gray-600');
-        }
-    }
-
-    // 5. Client-side Search Logic
-    document.getElementById('tableSearch').addEventListener('keyup', function() {
-        let filter = this.value.toUpperCase();
-        let tr = document.querySelectorAll("#productTable tbody tr");
-        tr.forEach(row => {
-            let text = row.innerText.toUpperCase();
-            row.style.display = text.includes(filter) ? "" : "none";
-        });
-    });
 </script>
 @endsection

@@ -35,17 +35,7 @@
 
                 <!-- Slider with enhanced card design -->
                 <div id="slider" class="flex gap-6 md:gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory py-4 px-2">
-                    @php
-                    $images = [
-                        "https://olgaperfume.com/cdn/shop/files/BerryPerry_Graphic_v2.jpg?v=1704439692&width=720",
-                        "https://olgaperfume.com/cdn/shop/files/5.png?v=1749054024&width=720",
-                        "https://olgaperfume.com/cdn/shop/files/4_c7390bb8-84e4-4c58-8b54-a6874200dc56.png?v=1749654642&width=720",
-                        "https://olgaperfume.com/cdn/shop/files/All_day_champs_compressed.jpg?v=1732792292&width=720",
-                        "https://olgaperfume.com/cdn/shop/files/Glam_Graphic_v2.jpg?v=1704455693&width=720",
-                        "https://olgaperfume.com/cdn/shop/files/hoome_sport_gen_2.png?v=1741159650&width=720"
-                    ];
-                    @endphp
-                    @foreach($images as $image)
+                    @foreach(($bestsellers ?? []) as $product)
                     <div class="min-w-[280px] md:min-w-[calc(25%-24px)] flex flex-col slide-item snap-start group/card">
                         <!-- Card Container with hover effects -->
                         <div class="bg-white rounded-2xl h-[320px] w-full flex items-center justify-center mb-5 shadow-sm hover:shadow-xl transition-all duration-500 group-hover/card:scale-[1.02] relative overflow-hidden">
@@ -53,9 +43,9 @@
                             <!-- <div class="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-white opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 z-20"></div> -->
                             
                             <!-- Image with hover scale -->
-                            <a href="/single" class="absolute inset-0 z-10 transform group-hover/card:scale-110 transition-transform duration-500 ease-out">
-                                <img src="{{ $image }}" 
-                                     alt="Product Image" 
+                            <a href="{{ route('product.show', $product->id) }}" class="absolute inset-0 z-10 transform group-hover/card:scale-110 transition-transform duration-500 ease-out">
+                                <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('assets/logo.png') }}" 
+                                     alt="{{ $product->name }}" 
                                      class="w-full h-full object-cover">
                             </a>
                             
@@ -71,7 +61,7 @@
                         <!-- Product Info -->
                         <div class="px-2">
                             <div class="flex items-center justify-between mb-1">
-                                <h4 class="text-xs font-bold tracking-widest text-[#D4A373] uppercase">SHISEIDO</h4>
+                                <h4 class="text-xs font-bold tracking-widest text-[#D4A373] uppercase">{{ $product->brand ?? 'BRAND' }}</h4>
                                 <!-- Wishlist Button -->
                                 <button class="text-gray-300 hover:text-red-500 transition-colors duration-300 opacity-0 group-hover/card:opacity-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,18 +70,29 @@
                                 </button>
                             </div>
                             
-                            <a href="/single" class="block text-[15px] font-medium text-gray-800 truncate mb-1 group-hover/card:text-[#1A1A1A] transition-colors">Eudermine Activating Essence</a>
-                            <p class="text-xs text-gray-500 mb-3">145ml</p>
+                            <a href="{{ route('product.show', $product->id) }}" class="block text-[15px] font-medium text-gray-800 truncate mb-1 group-hover/card:text-[#1A1A1A] transition-colors">{{ $product->name }}</a>
+                            <p class="text-xs text-gray-500 mb-3">{{ $product->concentration ?? '' }}</p>
                             
                             <!-- Price and CTA -->
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <span class="text-lg font-bold text-[#1A1A1A]">₹89.99</span>
-                                    <span class="text-sm text-gray-400 line-through ml-2">₹99.99</span>
+                                    @if($product->discount_price)
+                                        <span class="text-lg font-bold text-[#1A1A1A]">₹{{ $product->discount_price }}</span>
+                                        <span class="text-sm text-gray-400 line-through ml-2">₹{{ $product->price }}</span>
+                                    @else
+                                        <span class="text-lg font-bold text-[#1A1A1A]">₹{{ $product->price }}</span>
+                                    @endif
                                 </div>
-                                <button class="px-4 py-2 bg-[#D4A373] text-white text-xs font-medium rounded-lg hover:bg-[#B8864E] transform hover:scale-105 active:scale-95 transition-all duration-300 opacity-0 group-hover/card:opacity-100">
-                                    Add to Cart
-                                </button>
+                                
+                                @if($product->qty > 0)
+                                    <a href="{{ route('cart.add', $product->id) }}" class="px-4 py-2 bg-[#D4A373] text-white text-xs font-medium rounded-lg hover:bg-[#B8864E] transform hover:scale-105 active:scale-95 transition-all duration-300 opacity-0 group-hover/card:opacity-100 flex items-center justify-center">
+                                        Add to Cart
+                                    </a>
+                                @else
+                                    <button disabled class="px-4 py-2 bg-gray-300 text-gray-500 text-xs font-medium rounded-lg cursor-not-allowed opacity-0 group-hover/card:opacity-100">
+                                        Out of Stock
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>

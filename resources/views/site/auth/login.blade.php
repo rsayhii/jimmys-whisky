@@ -14,8 +14,29 @@
             </p>
         </div>
         
-        <form class="mt-8 space-y-6" action="#" method="POST">
+        <form class="mt-8 space-y-6" action="{{ route('login.post') }}" method="POST">
             @csrf
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="rounded-md bg-red-50 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Login Failed</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <ul class="list-disc pl-5 space-y-1">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="space-y-4">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
@@ -23,7 +44,7 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-envelope text-gray-400"></i>
                         </div>
-                        <input id="email" name="email" type="email" autocomplete="email" required class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-[#c0863d] focus:border-[#c0863d] sm:text-sm transition-all" placeholder="you@example.com">
+                        <input id="email" name="email" type="email" autocomplete="email" required value="{{ old('email') }}" class="block w-full pl-10 pr-3 py-3 border @error('email') border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500 @else border-gray-300 focus:ring-[#c0863d] focus:border-[#c0863d] @enderror rounded-lg sm:text-sm transition-all" placeholder="you@example.com">
                     </div>
                 </div>
                 <div>

@@ -16,122 +16,134 @@
         <div class="flex flex-col lg:flex-row gap-8">
             
             <!-- Sidebar -->
-            <aside class="w-full lg:w-1/4">
-                <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-xl font-bold text-gray-600">
-                            RJ
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-900">Rahul Jain</h3>
-                            <p class="text-sm text-gray-500">rahul.jain@example.com</p>
-                        </div>
-                    </div>
-
-                    <nav class="space-y-1">
-                        <a href="/user-account" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-black text-white font-medium transition">
-                            <i class="fas fa-user w-5"></i>
-                            My Account
-                        </a>
-                        <a href="/user-order" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-box w-5"></i>
-                            My Orders
-                        </a>
-                        <a href="/user-membership" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-crown w-5"></i>
-                            My Membership
-                        </a>
-                        <a href="/user-refill-requests" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-sync w-5"></i>
-                            Refill Requests
-                        </a>
-                        <a href="/wishlist" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-heart w-5"></i>
-                            Wishlist
-                        </a>
-                        <a href="/user-address" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black transition">
-                            <i class="fas fa-map-marker-alt w-5"></i>
-                            Addresses
-                        </a>
-                         <form method="POST" action="#" class="mt-4 pt-4 border-t border-gray-100">
-                            @csrf
-                            <button type="submit" class="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition">
-                                <i class="fas fa-sign-out-alt w-5"></i>
-                                Log Out
-                            </button>
-                        </form>
-                    </nav>
-                </div>
-            </aside>
+            @include('site.dashboard.sidebar')
 
             <!-- Main Content -->
             <div class="w-full lg:w-3/4 space-y-8">
+                
+                @if(session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 
                 <!-- Personal Information -->
                 <div class="bg-white rounded-xl shadow-sm p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-bold text-gray-900">Personal Information</h2>
-                        <button class="text-sm text-indigo-600 font-medium hover:underline">Edit</button>
+                        <button onclick="openModal('editProfileModal')" class="text-sm text-indigo-600 font-medium hover:underline">Edit</button>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">First Name</label>
-                            <p class="text-gray-900 font-medium">Rahul</p>
+                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Name</label>
+                            <p class="text-gray-900 font-medium">{{ $user->name }}</p>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Last Name</label>
-                            <p class="text-gray-900 font-medium">Jain</p>
+                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Joined Date</label>
+                            <p class="text-gray-900 font-medium">{{ $user->created_at->format('d M, Y') }}</p>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Email Address</label>
-                            <p class="text-gray-900 font-medium">rahul.jain@example.com</p>
+                            <p class="text-gray-900 font-medium">{{ $user->email }}</p>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Phone Number</label>
-                            <p class="text-gray-900 font-medium">+91 98765 43210</p>
+                            <p class="text-gray-900 font-medium">{{ $user->phone ?? 'Not set' }}</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Password Change -->
-                <div class="bg-white rounded-xl shadow-sm p-8">
-                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-bold text-gray-900">Security</h2>
-                        <button class="text-sm text-indigo-600 font-medium hover:underline">Update Password</button>
-                    </div>
-                    <div class="flex items-center gap-4">
-                         <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div>
-                             <p class="text-gray-900 font-medium">Password</p>
-                             <p class="text-sm text-gray-500">Last changed 3 months ago</p>
-                        </div>
-                    </div>
-                </div>
-
+               
                  <!-- Address Book Summary -->
                 <div class="bg-white rounded-xl shadow-sm p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-xl font-bold text-gray-900">Default Address</h2>
-                         <a href="#" class="text-sm text-indigo-600 font-medium hover:underline">Manage Addresses</a>
+                         <a href="{{ route('user.address') }}" class="text-sm text-indigo-600 font-medium hover:underline">Manage Addresses</a>
                     </div>
                     
-                    <div class="border border-gray-200 rounded-lg p-4 relative">
-                        <span class="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-medium">Default</span>
-                        <p class="font-bold text-gray-900 mb-1">Rahul Jain</p>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-2">
-                            1204, Palm Heights, Linking Road<br>
-                            Bandra West, Mumbai, Maharashtra 400050<br>
-                            India
-                        </p>
-                        <p class="text-gray-600 text-sm">Phone: +91 98765 43210</p>
-                    </div>
+                    @if($defaultAddress)
+                        <div class="border border-gray-200 rounded-lg p-4 relative">
+                            <span class="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-medium">Default</span>
+                            <p class="font-bold text-gray-900 mb-1">{{ $defaultAddress->name }}</p>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-2">
+                                {{ $defaultAddress->address_line1 }}<br>
+                                @if($defaultAddress->address_line2) {{ $defaultAddress->address_line2 }}<br> @endif
+                                {{ $defaultAddress->city }}, {{ $defaultAddress->state }} {{ $defaultAddress->postal_code }}<br>
+                                {{ $defaultAddress->country }}
+                            </p>
+                            <p class="text-gray-600 text-sm">Phone: {{ $defaultAddress->phone }}</p>
+                        </div>
+                    @else
+                        <div class="text-gray-500 text-sm">
+                            No default address set. <a href="{{ route('user.address') }}" class="text-indigo-600 hover:underline">Add one now</a>.
+                        </div>
+                    @endif
                 </div>
 
             </div>
         </div>
     </div>
 </div>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg mx-4">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Edit Personal Information</h2>
+            <button onclick="closeModal('editProfileModal')" class="text-gray-500 hover:text-black">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form action="{{ route('user.account.update') }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input type="text" name="name" value="{{ $user->name }}" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-black focus:ring-1 focus:ring-black">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" name="email" value="{{ $user->email }}" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-black focus:ring-1 focus:ring-black">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="text" name="phone" value="{{ $user->phone }}" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-black focus:ring-1 focus:ring-black">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" onclick="closeModal('editProfileModal')" class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">Cancel</button>
+                <button type="submit" class="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target.classList.contains('fixed')) {
+            event.target.classList.add('hidden');
+        }
+    }
+</script>
 @endsection

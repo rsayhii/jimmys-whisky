@@ -17,126 +17,152 @@
 
         <h1 class="text-3xl md:text-4xl font-serif text-[#c0863d] mb-8">Checkout</h1>
 
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
+
         <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
             
             <!-- Checkout Form -->
-            <div class="w-full lg:w-2/3 space-y-8">
-                
-                <!-- Contact Information -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">1</span>
-                        Contact Information
-                    </h2>
+            <div class="w-full lg:w-2/3">
+                <form action="{{ route('checkout.store') }}" method="POST" class="space-y-8">
+                    @csrf
                     
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                            <input type="email" value="rahul.jain@example.com" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" id="newsletter" checked class="text-[#c0863d] focus:ring-[#c0863d] rounded border-gray-300">
-                            <label for="newsletter" class="text-sm text-gray-600">Email me with news and offers</label>
+                    <!-- Contact Information -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">1</span>
+                            Contact Information
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" name="email" value="{{ old('email', $user->email ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="newsletter" id="newsletter" checked class="text-[#c0863d] focus:ring-[#c0863d] rounded border-gray-300">
+                                <label for="newsletter" class="text-sm text-gray-600">Email me with news and offers</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Shipping Address -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">2</span>
-                        Shipping Address
-                    </h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                            <input type="text" value="Rahul" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                            <input type="text" value="Jain" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                            <input type="text" value="123, Green Park" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Apartment, suite, etc. (optional)</label>
-                            <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                            <input type="text" value="New Delhi" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                            <select class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition bg-white">
-                                <option>Delhi</option>
-                                <option>Maharashtra</option>
-                                <option>Karnataka</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
-                            <input type="text" value="110016" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                            <input type="tel" value="+91 98765 43210" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
+                    <!-- Shipping Address -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">2</span>
+                            Shipping Address
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                <input type="text" name="first_name" value="{{ old('first_name', $user ? explode(' ', $user->name, 2)[0] : '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                <input type="text" name="last_name" value="{{ old('last_name', $user ? (explode(' ', $user->name, 2)[1] ?? '') : '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <input type="text" name="address" value="{{ old('address', $defaultAddress->address_line1 ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Apartment, suite, etc. (optional)</label>
+                                <input type="text" name="apartment" value="{{ old('apartment', $defaultAddress->address_line2 ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input type="text" name="city" value="{{ old('city', $defaultAddress->city ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                                <select name="state" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition bg-white" required>
+                                    <option value="Delhi" {{ (old('state', $defaultAddress->state ?? '') == 'Delhi') ? 'selected' : '' }}>Delhi</option>
+                                    <option value="Maharashtra" {{ (old('state', $defaultAddress->state ?? '') == 'Maharashtra') ? 'selected' : '' }}>Maharashtra</option>
+                                    <option value="Karnataka" {{ (old('state', $defaultAddress->state ?? '') == 'Karnataka') ? 'selected' : '' }}>Karnataka</option>
+                                    @if(isset($defaultAddress->state) && !in_array($defaultAddress->state, ['Delhi', 'Maharashtra', 'Karnataka']))
+                                        <option value="{{ $defaultAddress->state }}" selected>{{ $defaultAddress->state }}</option>
+                                    @endif
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
+                                <input type="text" name="pincode" value="{{ old('pincode', $defaultAddress->postal_code ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" name="phone" value="{{ old('phone', $defaultAddress->phone ?? $user->phone ?? '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Payment Method -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">3</span>
-                        Payment Method
-                    </h2>
-                    
-                    <div class="space-y-4">
-                        <!-- UPI -->
-                        <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition bg-gray-50">
-                            <input type="radio" name="payment" id="upi" checked class="text-[#c0863d] focus:ring-[#c0863d]">
-                            <label for="upi" class="flex-1 cursor-pointer flex justify-between items-center">
-                                <span class="font-medium text-gray-900">UPI (Google Pay / PhonePe / Paytm)</span>
-                                <i class="fas fa-mobile-alt text-gray-400"></i>
-                            </label>
-                        </div>
+                    <!-- Payment Method -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">3</span>
+                            Payment Method
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <!-- UPI -->
+                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition bg-gray-50">
+                                <input type="radio" name="payment" value="upi" id="upi" checked class="text-[#c0863d] focus:ring-[#c0863d]">
+                                <label for="upi" class="flex-1 cursor-pointer flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">UPI (Google Pay / PhonePe / Paytm)</span>
+                                    <i class="fas fa-mobile-alt text-gray-400"></i>
+                                </label>
+                            </div>
 
-                        <!-- Card -->
-                        <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
-                            <input type="radio" name="payment" id="card" class="text-[#c0863d] focus:ring-[#c0863d]">
-                            <label for="card" class="flex-1 cursor-pointer flex justify-between items-center">
-                                <span class="font-medium text-gray-900">Credit / Debit Card</span>
-                                <div class="flex gap-2 text-gray-400">
-                                    <i class="fab fa-cc-visa"></i>
-                                    <i class="fab fa-cc-mastercard"></i>
-                                </div>
-                            </label>
-                        </div>
+                            <!-- Card -->
+                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
+                                <input type="radio" name="payment" value="card" id="card" class="text-[#c0863d] focus:ring-[#c0863d]">
+                                <label for="card" class="flex-1 cursor-pointer flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Credit / Debit Card</span>
+                                    <div class="flex gap-2 text-gray-400">
+                                        <i class="fab fa-cc-visa"></i>
+                                        <i class="fab fa-cc-mastercard"></i>
+                                    </div>
+                                </label>
+                            </div>
 
-                        <!-- COD -->
-                        <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
-                            <input type="radio" name="payment" id="cod" class="text-[#c0863d] focus:ring-[#c0863d]">
-                            <label for="cod" class="flex-1 cursor-pointer flex justify-between items-center">
-                                <span class="font-medium text-gray-900">Cash on Delivery</span>
-                                <i class="fas fa-money-bill-wave text-gray-400"></i>
-                            </label>
+                            <!-- COD -->
+                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
+                                <input type="radio" name="payment" value="cod" id="cod" class="text-[#c0863d] focus:ring-[#c0863d]">
+                                <label for="cod" class="flex-1 cursor-pointer flex justify-between items-center">
+                                    <span class="font-medium text-gray-900">Cash on Delivery</span>
+                                    <i class="fas fa-money-bill-wave text-gray-400"></i>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex justify-between items-center pt-4">
-                    <a href="/cart" class="text-[#c0863d] hover:text-[#a87533] font-medium transition flex items-center gap-2">
-                        <i class="fas fa-arrow-left"></i> Return to Cart
-                    </a>
-                    <button class="bg-[#c0863d] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#a87533] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
-                        Pay Now
-                    </button>
-                </div>
-
+                    <div class="flex justify-between items-center pt-4">
+                        <a href="/cart" class="text-[#c0863d] hover:text-[#a87533] font-medium transition flex items-center gap-2">
+                            <i class="fas fa-arrow-left"></i> Return to Cart
+                        </a>
+                        @if($hasOutOfStock ?? false)
+                            <div class="flex flex-col items-end">
+                                <span class="text-red-600 text-sm font-bold mb-2">Some items are out of stock</span>
+                                <button type="button" disabled class="bg-gray-400 cursor-not-allowed text-white px-8 py-3 rounded-lg font-bold shadow-none">
+                                    Pay Now
+                                </button>
+                            </div>
+                        @else
+                            <button type="submit" class="bg-[#c0863d] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#a87533] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
+                                Pay Now
+                            </button>
+                        @endif
+                    </div>
+                </form>
             </div>
 
             <!-- Order Summary Sidebar -->
@@ -146,29 +172,28 @@
                     
                     <!-- Items -->
                     <div class="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2 pt-2 custom-scrollbar">
-                        <div class="flex gap-4">
+                        @foreach($cart as $id => $item)
+                        @php
+                            $stock = $cartItemsStock[$id] ?? 0;
+                            $isOutOfStock = $stock < $item['quantity'];
+                        @endphp
+                        <div class="flex gap-4 {{ $isOutOfStock ? 'opacity-50' : '' }}">
                             <div class="w-16 h-16 bg-gray-50 rounded border border-gray-100 relative">
-                                <img src="{{ asset('assets/collection/1.jpg') }}" class="w-full h-full object-cover rounded">
-                                <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
+                                <img src="{{ asset('storage/' . $item['image']) }}" class="w-full h-full object-cover rounded">
+                                <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{{ $item['quantity'] }}</span>
                             </div>
                             <div class="flex-1">
-                                <h4 class="text-sm font-medium text-gray-900 line-clamp-2">MUKH RANJAN™ DANT MANJAN</h4>
-                                <p class="text-xs text-gray-500 mt-1">100g</p>
+                                <h4 class="text-sm font-medium text-gray-900 line-clamp-2">{{ $item['name'] }}</h4>
+                                @if(isset($item['concentration']))
+                                <p class="text-xs text-gray-500 mt-1">{{ $item['concentration'] }}</p>
+                                @endif
+                                @if($isOutOfStock)
+                                    <p class="text-xs text-red-600 font-bold mt-1">Out of Stock (Available: {{ $stock }})</p>
+                                @endif
                             </div>
-                            <div class="text-sm font-medium text-gray-900">₹60.00</div>
+                            <div class="text-sm font-medium text-gray-900">₹{{ number_format($item['price'], 2) }}</div>
                         </div>
-
-                        <div class="flex gap-4">
-                            <div class="w-16 h-16 bg-gray-50 rounded border border-gray-100 relative">
-                                <img src="{{ asset('assets/collection/2.jpg') }}" class="w-full h-full object-cover rounded">
-                                <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="text-sm font-medium text-gray-900 line-clamp-2">KESAR FACE CREAM</h4>
-                                <p class="text-xs text-gray-500 mt-1">50ml</p>
-                            </div>
-                            <div class="text-sm font-medium text-gray-900">₹450.00</div>
-                        </div>
+                        @endforeach
                     </div>
 
                     <!-- Free Membership Promo -->
@@ -188,27 +213,49 @@
                         </div>
                     </div>
 
+                    <!-- Coupon Code -->
+                    <div class="mb-6">
+                        @if(session()->has('coupon'))
+                        <div class="flex items-center justify-between bg-green-50 border border-green-200 text-green-700 px-3 py-2 rounded-lg text-sm">
+                            <span>Code: <strong>{{ session('coupon')['code'] }}</strong></span>
+                            <form action="{{ route('coupon.remove') }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 font-medium ml-2">Remove</button>
+                            </form>
+                        </div>
+                        @else
+                        <form action="{{ route('coupon.apply') }}" method="POST" class="flex gap-2">
+                            @csrf
+                            <input type="text" name="code" placeholder="Coupon Code" class="flex-1 px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition text-sm" required>
+                            <button type="submit" class="bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">Apply</button>
+                        </form>
+                        @endif
+                    </div>
+
                     <!-- Costs -->
                     <div class="space-y-3 text-sm text-gray-600 mb-6 pt-4 border-t border-gray-100">
                         <div class="flex justify-between">
                             <span>Subtotal</span>
-                            <span class="font-medium text-gray-900">₹510.00</span>
+                            <span class="font-medium text-gray-900">₹{{ number_format($subtotal, 2) }}</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Shipping</span>
-                            <span class="font-medium text-gray-900">₹60.00</span>
+                            <span class="font-medium text-gray-900">₹0.00</span>
                         </div>
+                        @if($discount > 0)
                         <div class="flex justify-between text-green-600">
-                            <span>Discount</span>
-                            <span class="font-medium">-₹0.00</span>
+                            <span>Discount @if(session()->has('coupon'))({{ session('coupon')['code'] }})@endif</span>
+                            <span class="font-medium">-₹{{ number_format($discount, 2) }}</span>
                         </div>
+                        @endif
                     </div>
 
                     <div class="flex justify-between items-center py-4 border-t border-gray-100 mb-6">
                         <span class="text-base font-bold text-gray-900">Total</span>
                         <div class="text-right">
                             <span class="text-xs text-gray-500 block font-normal">INR</span>
-                            <span class="text-2xl font-bold text-[#c0863d]">₹570.00</span>
+                            <span class="text-2xl font-bold text-[#c0863d]">₹{{ number_format($total, 2) }}</span>
                         </div>
                     </div>
                     
