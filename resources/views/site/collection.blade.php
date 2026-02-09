@@ -12,12 +12,14 @@
             <input type="hidden" name="gender" value="{{ request('gender') }}">
         @endif
 
-  <!-- Top Bar -->
+  <!-- Top Bar -->  
   <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 pb-6 border-b border-gray-100 gap-6">
     <div class="flex flex-wrap items-center gap-8">
-      <div class="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-400">
-        <i class="fas fa-sliders-h text-[#c0863d]"></i>
-        <span>Filters</span>
+      <div class="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-400 cursor-pointer md:cursor-default group" onclick="toggleMobileFilters()">
+        <div class="p-2 rounded-full group-hover:bg-gray-50 transition-colors md:p-0 md:group-hover:bg-transparent">
+            <i class="fas fa-sliders-h text-[#c0863d]"></i>
+        </div>
+        <span class="group-hover:text-gray-900 transition-colors md:group-hover:text-gray-400">Filters</span>
       </div>
 
       <div class="flex gap-8 text-sm font-bold tracking-wider uppercase">
@@ -47,8 +49,19 @@
   <!-- Content -->
   <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
 
+    <!-- Sidebar Backdrop -->
+    <div id="filterBackdrop" onclick="toggleMobileFilters()" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm hidden transition-opacity duration-300 opacity-0 md:hidden"></div>
+
     <!-- Sidebar -->
-    <aside class="md:col-span-3 space-y-10">
+    <aside id="filterSidebar" class="fixed inset-y-0 left-0 z-50 w-[280px] bg-white p-6 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block md:w-auto md:p-0 md:bg-transparent md:overflow-visible md:col-span-3 space-y-10 shadow-2xl md:shadow-none">
+      
+      <!-- Mobile Close Button -->
+      <div class="flex items-center justify-between mb-8 md:hidden">
+        <h2 class="text-lg font-serif font-bold text-gray-900">Filters</h2>
+        <button type="button" onclick="toggleMobileFilters()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-all">
+            <i class="fas fa-times"></i>
+        </button>
+      </div>
 
       <!-- Occasion -->
       <div>
@@ -126,7 +139,7 @@
 
     <!-- Products -->
     <section class="md:col-span-9">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-8 md:gap-y-12">
 
         @forelse($products as $product)
         <!-- Product Card -->
@@ -201,6 +214,35 @@ function toggleSection(id) {
     if(el) {
         // Simple toggle for now, ideally animate height
         el.classList.toggle('hidden');
+    }
+}
+
+function toggleMobileFilters() {
+    const sidebar = document.getElementById('filterSidebar');
+    const backdrop = document.getElementById('filterBackdrop');
+    const body = document.body;
+
+    if (sidebar.classList.contains('-translate-x-full')) {
+        // Open
+        sidebar.classList.remove('-translate-x-full');
+        
+        backdrop.classList.remove('hidden');
+        // Small delay to allow display:block to apply before opacity transition
+        setTimeout(() => {
+            backdrop.classList.remove('opacity-0');
+        }, 10);
+        
+        body.classList.add('overflow-hidden');
+    } else {
+        // Close
+        sidebar.classList.add('-translate-x-full');
+        
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+        }, 300); // Match transition duration
+        
+        body.classList.remove('overflow-hidden');
     }
 }
 </script>

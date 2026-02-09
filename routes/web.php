@@ -34,6 +34,12 @@ Route::get('/membership', function () {
     return view('site.membership');
 });
 
+// Policy Routes
+Route::view('/terms-conditions', 'site.policy.terms')->name('policy.terms');
+Route::view('/shipping-policy', 'site.policy.shipping')->name('policy.shipping');
+Route::view('/returns-exchanges', 'site.policy.returns')->name('policy.returns');
+Route::view('/privacy-policy', 'site.policy.privacy')->name('policy.privacy');
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
@@ -41,50 +47,65 @@ Route::post('/signup', [AuthController::class, 'signup'])->name('signup.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 Route::prefix('admin')->group(function () {
-    Route::view('/login', 'admin.auth.login')->name('admin.login');
-    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
-    
-    // Product Routes
-    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.products');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-    Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
-    
-    // Route::view('/create', 'admin.products.create')->name('admin.products.create'); // Replaced by controller
-    // Route::view('/products/edit', 'admin.products.edit')->name('admin.products.edit'); // Replaced by controller
-    // Order Routes
-    Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.orders');
-    Route::get('/orders/export', [\App\Http\Controllers\Admin\OrderController::class, 'export'])->name('admin.orders.export');
-    Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('admin.orders.show');
-    Route::patch('/orders/bulk-update', [\App\Http\Controllers\Admin\OrderController::class, 'bulkUpdate'])->name('admin.orders.bulk_update');
-    Route::patch('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('admin.orders.update');
+    // Admin Authentication Routes (Guest only for login)
+    Route::group([], function () {
+        Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+        Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    });
 
-    Route::view('/membership', 'admin.membership.membership')->name('admin.membership.membership');
-    Route::view('/view-membership', 'admin.membership.view-membership')->name('admin.membership.view-membership');
-    Route::view('/refill-requests', 'admin.membership.refill-requests')->name('admin.membership.refill-requests');
-    Route::view('/view-refill-request', 'admin.membership.view-refill-request')->name('admin.membership.view-refill-request');
-    
-    // Category Routes
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names([
-        'index' => 'admin.categories.index',
-        'store' => 'admin.categories.store',
-        'update' => 'admin.categories.update',
-        'destroy' => 'admin.categories.destroy',
-    ])->except(['create', 'edit', 'show']);
+    // Admin Protected Routes
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        
+        Route::get('/', function() {
+            return redirect()->route('admin.dashboard');
+        });
 
-    // Coupon Routes
-    Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class)->names([
-        'index' => 'admin.coupons',
-        'store' => 'admin.coupons.store',
-        'update' => 'admin.coupons.update',
-        'destroy' => 'admin.coupons.destroy',
-    ])->except(['create', 'edit', 'show']);
-    Route::get('/contact-queries', [\App\Http\Controllers\Admin\ContactQueryController::class, 'index'])->name('admin.contact-query');
-    Route::delete('/contact-queries/{id}', [\App\Http\Controllers\Admin\ContactQueryController::class, 'destroy'])->name('admin.contact-query.destroy');
+        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+        
+        // Product Routes
+        Route::get('/products', [ProductController::class, 'index'])->name('admin.products.products');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+        
+        // Order Routes
+        Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders.orders');
+        Route::get('/orders/export', [\App\Http\Controllers\Admin\OrderController::class, 'export'])->name('admin.orders.export');
+        Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('admin.orders.show');
+        Route::get('/orders/{order}/invoice', [\App\Http\Controllers\Admin\OrderController::class, 'invoice'])->name('admin.orders.invoice');
+        Route::patch('/orders/bulk-update', [\App\Http\Controllers\Admin\OrderController::class, 'bulkUpdate'])->name('admin.orders.bulk_update');
+        Route::patch('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('admin.orders.update');
+
+        Route::get('/membership', [\App\Http\Controllers\Admin\MembershipController::class, 'index'])->name('admin.membership.membership');
+        Route::get('/view-membership/{id}', [\App\Http\Controllers\Admin\MembershipController::class, 'viewPlan'])->name('admin.membership.view-membership');
+        Route::get('/refill-requests', [\App\Http\Controllers\Admin\MembershipController::class, 'refillRequests'])->name('admin.membership.refill-requests');
+        Route::get('/view-refill-request/{id}', [\App\Http\Controllers\Admin\MembershipController::class, 'viewRefillRequest'])->name('admin.membership.view-refill-request');
+        Route::put('/update-refill-request/{id}', [\App\Http\Controllers\Admin\MembershipController::class, 'updateRefillRequest'])->name('admin.membership.update-refill-request');
+        
+        // Category Routes
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names([
+            'index' => 'admin.categories.index',
+            'store' => 'admin.categories.store',
+            'update' => 'admin.categories.update',
+            'destroy' => 'admin.categories.destroy',
+        ])->except(['create', 'edit', 'show']);
+
+        // Coupon Routes
+        Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class)->names([
+            'index' => 'admin.coupons',
+            'store' => 'admin.coupons.store',
+            'update' => 'admin.coupons.update',
+            'destroy' => 'admin.coupons.destroy',
+        ])->except(['create', 'edit', 'show']);
+        Route::get('/contact-queries', [\App\Http\Controllers\Admin\ContactQueryController::class, 'index'])->name('admin.contact-query');
+        Route::delete('/contact-queries/{id}', [\App\Http\Controllers\Admin\ContactQueryController::class, 'destroy'])->name('admin.contact-query.destroy');
+    });
 });
 
 
@@ -107,20 +128,21 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user-address/{address}/default', [AddressController::class, 'setDefault'])->name('user.address.default');
 
     Route::get('/user-membership', function () {
-        return view('site.dashboard.membership');
+        $recentRefills = \App\Models\RefillRequest::where('user_id', auth()->id())
+            ->with('product')
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('site.dashboard.membership', compact('recentRefills'));
     });
 
-    Route::get('/user-refill-requests', function () {
-        return view('site.dashboard.refill-requests');
-    });
+    Route::get('/user-refill-requests', [\App\Http\Controllers\Site\RefillRequestController::class, 'index'])->name('user.refill-requests');
+    
+    Route::get('/user-new-refill-request', [\App\Http\Controllers\Site\RefillRequestController::class, 'create'])->name('user.refill-request.create');
+    Route::post('/user-new-refill-request', [\App\Http\Controllers\Site\RefillRequestController::class, 'store'])->name('user.refill-request.store');
 
-    Route::get('/user-new-refill-request', function () {
-        return view('site.dashboard.new-refill-request');
-    });
-
-    Route::get('/user-view-refill-request', function () {
-        return view('site.dashboard.view-refill-request');
-    });
+    Route::get('/user-view-refill-request/{id}', [\App\Http\Controllers\Site\RefillRequestController::class, 'show'])->name('user.refill-request.show');
+    Route::put('/user-refill-request/{id}/note', [\App\Http\Controllers\Site\RefillRequestController::class, 'updateNote'])->name('user.refill-request.update-note');
 });
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -165,7 +165,7 @@
             <!-- Right CTA -->
             <div class="hidden md:flex items-center space-x-3 absolute right-4 top-1/2 transform -translate-y-1/2">
                 <span class="text-xs font-light text-yellow-100" style="color: #fef3c7;">Limited Offer</span>
-                <a href="/offers" class="bg-yellow-200 text-primary-dark text-xs font-medium px-3 py-1 rounded-full hover:bg-yellow-100 transition-all duration-300 transform hover:scale-105">
+                <a href="/collection" class="bg-yellow-200 text-primary-dark text-xs font-medium px-3 py-1 rounded-full hover:bg-yellow-100 transition-all duration-300 transform hover:scale-105">
                     Shop Now <i class="fas fa-arrow-right ml-1 text-xs"></i>
                 </a>
             </div>
@@ -174,8 +174,8 @@
 </div>
 
 <!-- MAIN HEADER -->
-<header class="w-full border-b border-gray-100 shadow-sm bg-white/95 backdrop-blur-sm sticky top-0 z-50">
-    <div class=" mx-auto flex items-center justify-between px-12 sm:px-6 lg:px-12 py-0 lg:py-2">
+<header class="w-full border-b border-gray-100 shadow-sm bg-white/95 backdrop-blur-sm sticky top-0 z-[999]">
+    <div class=" mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 py-2 lg:py-2">
         
         <!-- LOGO -->
         <a href="/">
@@ -188,7 +188,7 @@
                 </div>
                 <div class="flex flex-col">
                     <img src="{{ asset('assets/logo-text.png') }}" alt="Parcos" class="w-28 lg:w-32 h-auto">
-                    <span class="text-[10px] text-gray-500 font-light tracking-widest mt-0.5">PURE WELLNESS</span>
+                    <span class="hidden lg:block text-[10px] text-gray-500 font-light tracking-widest mt-0.5">PURE WELLNESS</span>
                 </div>
             </div>
         </a>
@@ -264,13 +264,204 @@
             </a>
             
             <!-- Mobile Menu Button -->
-            <button class="lg:hidden text-gray-600 hover:text-primary">
+            <button id="mobile-menu-btn" class="lg:hidden text-gray-600 hover:text-primary focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
         </div>
     </div>
+</header>
+
+<!-- Mobile Menu Backdrop -->
+<div id="mobile-menu-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] hidden opacity-0 transition-opacity duration-300 lg:hidden"></div>
+
+<!-- Mobile Menu Drawer (Right Side Slider) -->
+<div id="mobile-menu-drawer" class="fixed inset-y-0 right-0 z-[10000] w-[300px] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden flex flex-col">
+    <!-- Drawer Header -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
+        <div class="flex items-center gap-2">
+            <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="w-8 h-8 object-contain">
+            <span class="text-xl font-serif font-bold text-gray-900 tracking-wide">Jimmy's Whisky</span>
+        </div>
+        <button id="mobile-menu-close" class="p-2 -mr-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 focus:outline-none transform hover:rotate-90">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Drawer Content -->
+    <div class="flex-1 overflow-y-auto">
+        <nav class="flex flex-col p-4 space-y-1">
+            <a href="/" class="flex items-center justify-between p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group {{ request()->is('/') ? 'bg-orange-50 text-primary' : '' }}">
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 {{ request()->is('/') ? 'text-primary' : 'text-gray-400 group-hover:text-primary' }} transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-[15px] tracking-wide">Home</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+            
+            <a href="/collection" class="flex items-center justify-between p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group {{ request()->is('collection*') ? 'bg-orange-50 text-primary' : '' }}">
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 {{ request()->is('collection*') ? 'text-primary' : 'text-gray-400 group-hover:text-primary' }} transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-[15px] tracking-wide">Collection</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+
+            <a href="/membership" class="flex items-center justify-between p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group {{ request()->is('membership') ? 'bg-orange-50 text-primary' : '' }}">
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 {{ request()->is('membership') ? 'text-primary' : 'text-gray-400 group-hover:text-primary' }} transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.25 2.25 0 1 0-4.5 0v5.75m0 0a2.25 2.25 0 1 1-4.5 0V9.75a2.25 2.25 0 1 1 4.5 0V5.625a2.25 2.25 0 1 1 4.5 0v9.75" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-[15px] tracking-wide">Membership</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+
+            <a href="/contact" class="flex items-center justify-between p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group {{ request()->is('contact') ? 'bg-orange-50 text-primary' : '' }}">
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 {{ request()->is('contact') ? 'text-primary' : 'text-gray-400 group-hover:text-primary' }} transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-[15px] tracking-wide">Contact Us</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+
+            <a href="/about" class="flex items-center justify-between p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group {{ request()->is('about') ? 'bg-orange-50 text-primary' : '' }}">
+                <div class="flex items-center gap-4">
+                    <div class="w-6 h-6 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 {{ request()->is('about') ? 'text-primary' : 'text-gray-400 group-hover:text-primary' }} transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium text-[15px] tracking-wide">About Us</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
+        </nav>
+
+        <!-- Divider -->
+        <div class="px-6 py-2">
+            <div class="h-px bg-gray-100"></div>
+        </div>
+
+        <!-- Mobile Specific Actions -->
+        <div class="px-4 pb-6 space-y-1">
+            <a href="/user-account" class="flex items-center gap-4 p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group">
+                <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                </div>
+                <span class="font-medium text-[15px] tracking-wide">My Account</span>
+            </a>
+            
+            <a href="/wishlist" class="flex items-center gap-4 p-4 rounded-xl text-gray-600 hover:text-primary hover:bg-orange-50/50 transition-all duration-300 group">
+                <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                </div>
+                <span class="font-medium text-[15px] tracking-wide">Wishlist</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="p-6 bg-gray-50 border-t border-gray-100">
+        <div class="flex justify-center space-x-6 mb-4">
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors transform hover:-translate-y-1 duration-300">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772 4.902 4.902 0 011.772-1.153c.636-.247 1.363-.416 2.427-.465 1.067-.047 1.409-.06 4.123-.06h.08zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors transform hover:-translate-y-1 duration-300">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors transform hover:-translate-y-1 duration-300">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+            </a>
+        </div>
+        <p class="text-center text-[10px] text-gray-400 tracking-wider uppercase">© 2026 Jimmy's Whisky. All rights reserved.</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const body = document.body;
+
+        function toggleMenu() {
+            const isClosed = mobileMenuDrawer.classList.contains('translate-x-full');
+            
+            if (isClosed) {
+                // Open
+                mobileMenuDrawer.classList.remove('translate-x-full');
+                mobileMenuBackdrop.classList.remove('hidden');
+                // Small delay to allow display:block to apply before opacity transition
+                setTimeout(() => {
+                    mobileMenuBackdrop.classList.remove('opacity-0');
+                }, 10);
+                body.classList.add('overflow-hidden');
+            } else {
+                // Close
+                mobileMenuDrawer.classList.add('translate-x-full');
+                mobileMenuBackdrop.classList.add('opacity-0');
+                setTimeout(() => {
+                    mobileMenuBackdrop.classList.add('hidden');
+                }, 300);
+                body.classList.remove('overflow-hidden');
+            }
+        }
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+        }
+
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', toggleMenu);
+        }
+
+        if (mobileMenuBackdrop) {
+            mobileMenuBackdrop.addEventListener('click', toggleMenu);
+        }
+    });
+</script>
 </header>
 
 <!-- Search Overlay -->

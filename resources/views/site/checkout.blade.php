@@ -3,11 +3,11 @@
 @section('title', 'Checkout')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen py-10">
+<div class="bg-gray-50 min-h-screen py-6 md:py-10">
     <div class="container mx-auto px-4 lg:px-12 max-w-7xl">
         
         <!-- Breadcrumb -->
-        <nav class="flex mb-8 text-sm text-gray-500">
+        <nav class="flex mb-6 md:mb-8 text-xs md:text-sm text-gray-500 overflow-x-auto whitespace-nowrap pb-2 md:pb-0">
             <a href="/" class="hover:text-black transition">Home</a>
             <span class="mx-2">/</span>
             <a href="/cart" class="hover:text-black transition">Cart</a>
@@ -15,7 +15,7 @@
             <span class="text-black font-medium">Checkout</span>
         </nav>
 
-        <h1 class="text-3xl md:text-4xl font-serif text-[#c0863d] mb-8">Checkout</h1>
+        <h1 class="text-2xl md:text-4xl font-serif text-[#c0863d] mb-6 md:mb-8">Checkout</h1>
 
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -29,15 +29,32 @@
             </div>
         @endif
 
-        <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <div class="flex flex-col-reverse lg:flex-row gap-8 lg:gap-12">
             
             <!-- Checkout Form -->
             <div class="w-full lg:w-2/3">
-                <form action="{{ route('checkout.store') }}" method="POST" class="space-y-8">
+                @guest
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 text-center py-10 md:py-12">
+                    <div class="w-16 h-16 bg-[#c0863d]/10 rounded-full flex items-center justify-center mx-auto mb-6 text-[#c0863d]">
+                        <i class="fas fa-user-lock text-2xl"></i>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Login Required</h2>
+                    <p class="text-sm md:text-base text-gray-500 mb-8 max-w-md mx-auto">Please log in to your account to complete your purchase and track your order.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="{{ route('login') }}?redirect=checkout" class="w-full sm:w-auto bg-[#c0863d] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#a87533] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
+                            Log In
+                        </a>
+                        <a href="{{ route('signup') }}?redirect=checkout" class="w-full sm:w-auto bg-white text-gray-900 border border-gray-200 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition">
+                            Create Account
+                        </a>
+                    </div>
+                </div>
+                @else
+                <form action="{{ route('checkout.store') }}" method="POST" class="space-y-6 md:space-y-8">
                     @csrf
                     
                     <!-- Contact Information -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-8">
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">1</span>
                             Contact Information
@@ -56,13 +73,13 @@
                     </div>
 
                     <!-- Shipping Address -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-8">
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">2</span>
                             Shipping Address
                         </h2>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                                 <input type="text" name="first_name" value="{{ old('first_name', $user ? explode(' ', $user->name, 2)[0] : '') }}" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition" required>
@@ -86,12 +103,10 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
                                 <select name="state" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-[#c0863d] focus:ring-1 focus:ring-[#c0863d] transition bg-white" required>
-                                    <option value="Delhi" {{ (old('state', $defaultAddress->state ?? '') == 'Delhi') ? 'selected' : '' }}>Delhi</option>
-                                    <option value="Maharashtra" {{ (old('state', $defaultAddress->state ?? '') == 'Maharashtra') ? 'selected' : '' }}>Maharashtra</option>
-                                    <option value="Karnataka" {{ (old('state', $defaultAddress->state ?? '') == 'Karnataka') ? 'selected' : '' }}>Karnataka</option>
-                                    @if(isset($defaultAddress->state) && !in_array($defaultAddress->state, ['Delhi', 'Maharashtra', 'Karnataka']))
-                                        <option value="{{ $defaultAddress->state }}" selected>{{ $defaultAddress->state }}</option>
-                                    @endif
+                                    <option value="">Select State</option>
+                                    @foreach(['Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'] as $state)
+                                        <option value="{{ $state }}" {{ (old('state', $defaultAddress->state ?? '') == $state) ? 'selected' : '' }}>{{ $state }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>
@@ -106,7 +121,7 @@
                     </div>
 
                     <!-- Payment Method -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-8">
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <span class="w-8 h-8 rounded-full bg-[#c0863d] text-white flex items-center justify-center text-sm">3</span>
                             Payment Method
@@ -114,19 +129,19 @@
                         
                         <div class="space-y-4">
                             <!-- UPI -->
-                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition bg-gray-50">
-                                <input type="radio" name="payment" value="upi" id="upi" checked class="text-[#c0863d] focus:ring-[#c0863d]">
-                                <label for="upi" class="flex-1 cursor-pointer flex justify-between items-center">
-                                    <span class="font-medium text-gray-900">UPI (Google Pay / PhonePe / Paytm)</span>
+                            <div class="border border-gray-200 rounded-lg p-3 md:p-4 flex items-center gap-4 opacity-60 cursor-not-allowed transition bg-gray-50">
+                                <input type="radio" name="payment" value="upi" id="upi" disabled class="text-gray-400 border-gray-300 focus:ring-0 cursor-not-allowed">
+                                <label for="upi" class="flex-1 cursor-not-allowed flex justify-between items-center">
+                                    <span class="font-medium text-gray-500 text-sm md:text-base">UPI (Google Pay / PhonePe / Paytm) <span class="text-xs text-red-500 font-normal ml-1 block sm:inline">(Unavailable)</span></span>
                                     <i class="fas fa-mobile-alt text-gray-400"></i>
                                 </label>
                             </div>
 
                             <!-- Card -->
-                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
-                                <input type="radio" name="payment" value="card" id="card" class="text-[#c0863d] focus:ring-[#c0863d]">
-                                <label for="card" class="flex-1 cursor-pointer flex justify-between items-center">
-                                    <span class="font-medium text-gray-900">Credit / Debit Card</span>
+                            <div class="border border-gray-200 rounded-lg p-3 md:p-4 flex items-center gap-4 opacity-60 cursor-not-allowed transition bg-gray-50">
+                                <input type="radio" name="payment" value="card" id="card" disabled class="text-gray-400 border-gray-300 focus:ring-0 cursor-not-allowed">
+                                <label for="card" class="flex-1 cursor-not-allowed flex justify-between items-center">
+                                    <span class="font-medium text-gray-500 text-sm md:text-base">Credit / Debit Card <span class="text-xs text-red-500 font-normal ml-1 block sm:inline">(Unavailable)</span></span>
                                     <div class="flex gap-2 text-gray-400">
                                         <i class="fab fa-cc-visa"></i>
                                         <i class="fab fa-cc-mastercard"></i>
@@ -135,39 +150,40 @@
                             </div>
 
                             <!-- COD -->
-                            <div class="border border-gray-200 rounded-lg p-4 flex items-center gap-4 hover:border-[#c0863d] cursor-pointer transition">
-                                <input type="radio" name="payment" value="cod" id="cod" class="text-[#c0863d] focus:ring-[#c0863d]">
+                            <div class="border border-[#c0863d] rounded-lg p-3 md:p-4 flex items-center gap-4 cursor-pointer transition bg-orange-50/30">
+                                <input type="radio" name="payment" value="cod" id="cod" checked class="text-[#c0863d] focus:ring-[#c0863d]">
                                 <label for="cod" class="flex-1 cursor-pointer flex justify-between items-center">
-                                    <span class="font-medium text-gray-900">Cash on Delivery</span>
+                                    <span class="font-medium text-gray-900 text-sm md:text-base">Cash on Delivery</span>
                                     <i class="fas fa-money-bill-wave text-gray-400"></i>
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center pt-4">
-                        <a href="/cart" class="text-[#c0863d] hover:text-[#a87533] font-medium transition flex items-center gap-2">
+                    <div class="flex flex-col-reverse sm:flex-row justify-between items-center pt-4 gap-4">
+                        <a href="/cart" class="w-full sm:w-auto text-[#c0863d] hover:text-[#a87533] font-medium transition flex items-center justify-center sm:justify-start gap-2 py-3 sm:py-0 border border-gray-200 sm:border-0 rounded-lg sm:rounded-none">
                             <i class="fas fa-arrow-left"></i> Return to Cart
                         </a>
                         @if($hasOutOfStock ?? false)
-                            <div class="flex flex-col items-end">
+                            <div class="flex flex-col items-end w-full sm:w-auto">
                                 <span class="text-red-600 text-sm font-bold mb-2">Some items are out of stock</span>
-                                <button type="button" disabled class="bg-gray-400 cursor-not-allowed text-white px-8 py-3 rounded-lg font-bold shadow-none">
+                                <button type="button" disabled class="w-full sm:w-auto bg-gray-400 cursor-not-allowed text-white px-8 py-3 rounded-lg font-bold shadow-none">
                                     Pay Now
                                 </button>
                             </div>
                         @else
-                            <button type="submit" class="bg-[#c0863d] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#a87533] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
+                            <button type="submit" class="w-full sm:w-auto bg-[#c0863d] text-white px-8 py-3 rounded-lg font-bold hover:bg-[#a87533] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
                                 Pay Now
                             </button>
                         @endif
                     </div>
                 </form>
+                @endguest
             </div>
 
             <!-- Order Summary Sidebar -->
             <div class="w-full lg:w-1/3">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-24">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 lg:sticky lg:top-24">
                     <h2 class="text-xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100">Order Summary</h2>
                     
                     <!-- Items -->

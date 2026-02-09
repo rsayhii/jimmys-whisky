@@ -20,6 +20,9 @@
                     <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                 </select>
              </form>
+            <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" class="bg-indigo-50 text-indigo-500 px-4 py-2 rounded text-sm font-medium border border-indigo-100 hover:bg-indigo-100 flex items-center gap-2">
+                <i class="fas fa-file-invoice"></i> Invoice
+            </a>
             <button class="bg-red-50 text-red-500 px-4 py-2 rounded text-sm font-medium border border-red-100 hover:bg-red-100">Delete Order</button>
         </div>
     </div>

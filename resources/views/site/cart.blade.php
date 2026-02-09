@@ -122,9 +122,12 @@
                     </div>
                 </div>
                 
-                <div class="mt-8">
-                    <a href="/collection" class="inline-flex items-center gap-2 text-[#c0863d] hover:text-[#a87533] font-medium transition">
-                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                <div class="mt-8 flex justify-start">
+                    <a href="/collection" class="group inline-flex items-center gap-3 text-gray-500 hover:text-[#c0863d] transition-colors duration-300">
+                        <div class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm group-hover:border-[#c0863d] group-hover:bg-[#c0863d] group-hover:text-white transition-all duration-300">
+                             <i class="fas fa-arrow-left text-sm transform group-hover:-translate-x-0.5 transition-transform"></i>
+                        </div>
+                        <span class="font-medium tracking-wide uppercase text-xs">Continue Shopping</span>
                     </a>
                 </div>
             </div>

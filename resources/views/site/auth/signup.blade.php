@@ -85,7 +85,7 @@
             <div class="flex items-center">
                 <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-[#c0863d] focus:ring-[#c0863d] border-gray-300 rounded cursor-pointer">
                 <label for="terms" class="ml-2 block text-sm text-gray-900 cursor-pointer">
-                    I agree to the <a href="#" class="text-[#c0863d] hover:underline">Terms of Service</a> and <a href="#" class="text-[#c0863d] hover:underline">Privacy Policy</a>
+                    I agree to the <a href="{{ route('policy.terms') }}" target="_blank" class="text-[#c0863d] hover:underline">Terms of Service</a> and <a href="{{ route('policy.privacy') }}" target="_blank" class="text-[#c0863d] hover:underline">Privacy Policy</a>
                 </label>
             </div>
 

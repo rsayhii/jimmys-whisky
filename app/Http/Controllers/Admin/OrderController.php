@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\MembershipPlan;
 
 class OrderController extends Controller
 {
@@ -20,6 +21,12 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
+    public function invoice($id)
+    {
+        $order = Order::with('items.product', 'user')->findOrFail($id);
+        return view('admin.orders.invoice', compact('order'));
+    }
+
     public function update(Request $request, $id)
     {
         $order = Order::findOrFail($id);
@@ -32,6 +39,30 @@ class OrderController extends Controller
         
         if ($request->status == 'delivered') {
             $order->payment_status = 'paid';
+
+            // Assign Membership if user doesn't have one (First Time Buyer logic)
+            $user = $order->user;
+            if ($user && !$user->membership_type) {
+                // Fetch the default plan (Gold Membership)
+                $plan = MembershipPlan::where('slug', 'gold-membership')->first();
+                
+                if ($plan) {
+                    $user->update([
+                        'membership_type' => $plan->name,
+                        'membership_start_date' => now(),
+                        'membership_end_date' => now()->addMonths($plan->duration_months),
+                        'refill_requests_balance' => $plan->refill_slots,
+                    ]);
+                } else {
+                    // Fallback if plan not found in DB
+                    $user->update([
+                        'membership_type' => 'Gold Membership',
+                        'membership_start_date' => now(),
+                        'membership_end_date' => now()->addYear(),
+                        'refill_requests_balance' => 10,
+                    ]);
+                }
+            }
         }
 
         $order->save();

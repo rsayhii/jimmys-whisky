@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Total Members</p>
-                    <h3 class="text-2xl font-bold text-gray-800">1,248</h3>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ $totalMembers }}</h3>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Active Subscriptions</p>
-                    <h3 class="text-2xl font-bold text-gray-800">892</h3>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ $activeSubscriptions }}</h3>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Monthly Revenue</p>
-                    <h3 class="text-2xl font-bold text-gray-800">₹4.2L</h3>
+                    <h3 class="text-2xl font-bold text-gray-800">₹{{ number_format($monthlyRevenue, 2) }}</h3>
                 </div>
             </div>
         </div>
@@ -59,108 +59,47 @@
                 <tr class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b border-gray-200">
                     <th class="p-4 font-semibold">Plan Name</th>
                     <th class="p-4 font-semibold">Membership Price</th>
-                    <th class="p-4 font-semibold">Refills</th>
+                    <th class="p-4 font-semibold">Slots</th>
                     <th class="p-4 font-semibold">Benefits</th>
                     <th class="p-4 font-semibold">Status</th>
                     <th class="p-4 font-semibold text-right">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-                <!-- Row 1 -->
+                @foreach($plans as $plan)
                 <tr class="hover:bg-gray-50 transition">
                     <td class="p-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center text-gray-600">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-crown text-yellow-500"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-gray-800">Silver Edition</p>
-                                <span class="text-xs text-gray-500">ID: #MP-001</span>
+                                <p class="font-bold text-gray-800">{{ $plan['name'] }}</p>
+                                <span class="text-xs text-gray-500">{{ $plan['users_count'] }} Active Members</span>
                             </div>
                         </div>
                     </td>
-                    <td class="p-4 font-medium text-gray-700">₹999</td>
-                    <td class="p-4 text-gray-600">3 Slots</td>
+                    <td class="p-4 font-medium text-gray-700">{{ $plan['price'] }}</td>
+                    <td class="p-4 text-gray-600">{{ $plan['refills'] }}</td>
                     <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            Free Shipping
+                        @foreach($plan['benefits'] as $benefit)
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $loop->first ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800 ml-1' }}">
+                            {{ $benefit }}
                         </span>
+                        @endforeach
                     </td>
                     <td class="p-4">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                             <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                            Active
+                            {{ $plan['status'] }}
                         </span>
                     </td>
                     <td class="p-4 text-right">
-                        <a href="{{ route('admin.membership.view-membership') }}" class="text-gray-400 hover:text-blue-600 transition mx-1"><i class="fas fa-edit"></i></a>
-                        <button class="text-gray-400 hover:text-red-600 transition mx-1"><i class="fas fa-trash"></i></button>
+                        <a href="{{ route('admin.membership.view-membership', ['id' => $plan['id']]) }}" class="text-gray-400 hover:text-blue-600 transition mx-1"><i class="fas fa-edit"></i></a>
+                        <!-- <button class="text-gray-400 hover:text-red-600 transition mx-1"><i class="fas fa-trash"></i></button> -->
                     </td>
                 </tr>
-
-                <!-- Row 2 -->
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center text-yellow-600">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-gray-800">Gold Elite</p>
-                                <span class="text-xs text-gray-500">ID: #MP-002</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 font-medium text-gray-700">₹2,499</td>
-                    <td class="p-4 text-gray-600">5 Slots</td>
-                    <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            Priority Access
-                        </span>
-                    </td>
-                    <td class="p-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                            Active
-                        </span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <a href="{{ route('admin.membership.view-membership') }}" class="text-gray-400 hover:text-blue-600 transition mx-1"><i class="fas fa-edit"></i></a>
-                        <button class="text-gray-400 hover:text-red-600 transition mx-1"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-
-                <!-- Row 3 -->
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center text-white">
-                                <i class="fas fa-gem"></i>
-                            </div>
-                            <div>
-                                <p class="font-bold text-gray-800">Noir Platinum</p>
-                                <span class="text-xs text-gray-500">ID: #MP-003</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 font-medium text-gray-700">₹4,999</td>
-                    <td class="p-4 text-gray-600">10 Slots</td>
-                    <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                            VIP Events
-                        </span>
-                    </td>
-                    <td class="p-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                            Draft
-                        </span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <a href="{{ route('admin.membership.view-membership') }}" class="text-gray-400 hover:text-blue-600 transition mx-1"><i class="fas fa-edit"></i></a>
-                        <button class="text-gray-400 hover:text-red-600 transition mx-1"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

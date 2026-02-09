@@ -173,8 +173,11 @@
                         <td class="px-6 py-4 text-sm text-gray-900 font-medium">
                             ₹{{ number_format($order->total_amount, 2) }}
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="{{ route('admin.orders.show', $order->id) }}" class="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-black hover:border-black transition-all duration-200">
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" class="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-black hover:border-black transition-all duration-200" title="Invoice">
+                                <i class="fas fa-file-invoice text-gray-400 text-xs group-hover:text-white"></i>
+                            </a>
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="group inline-flex items-center justify-center w-8 h-8 rounded-full bg-white border border-gray-200 hover:bg-black hover:border-black transition-all duration-200" title="View Details">
                                 <i class="fas fa-arrow-right text-gray-400 text-xs group-hover:text-white"></i>
                             </a>
                         </td>

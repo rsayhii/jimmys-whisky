@@ -22,6 +22,10 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'membership_type',
+        'membership_start_date',
+        'membership_end_date',
+        'refill_requests_balance',
     ];
 
     /**
@@ -44,6 +48,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'membership_start_date' => 'date',
+            'membership_end_date' => 'date',
         ];
     }
 

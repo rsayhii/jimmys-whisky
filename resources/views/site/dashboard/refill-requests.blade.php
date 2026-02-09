@@ -46,95 +46,71 @@
 
                 <!-- Requests List -->
                 <div class="space-y-4">
-                    
-                    <!-- Request Item 1 -->
+                    @forelse($requests as $request)
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                         <div class="p-6 flex flex-col sm:flex-row gap-6">
                             <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=300&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover">
+                                @if($request->product->images->isNotEmpty())
+                                    <img src="{{ asset('storage/' . $request->product->images->first()->image_path) }}" alt="{{ $request->product->name }}" class="w-full h-full object-cover">
+                                @elseif($request->product->image)
+                                    <img src="{{ asset('storage/' . $request->product->image) }}" alt="{{ $request->product->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <img src="https://via.placeholder.com/300" alt="No Image" class="w-full h-full object-cover">
+                                @endif
                             </div>
                             <div class="flex-1">
                                 <div class="flex justify-between items-start mb-2">
                                     <div>
-                                        <h3 class="font-bold text-gray-900">Oud Wood Intense</h3>
-                                        <p class="text-sm text-gray-500">Refill ID: #REF-8293</p>
+                                        <h3 class="font-bold text-gray-900">{{ $request->product->name }}</h3>
+                                        <p class="text-sm text-gray-500">Refill ID: #REF-{{ $request->id }}</p>
                                     </div>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                        Completed
+                                    @php
+                                        $statusClasses = [
+                                            'pending' => 'bg-yellow-100 text-yellow-800',
+                                            'approved' => 'bg-blue-100 text-blue-800',
+                                            'pickup_scheduled' => 'bg-indigo-100 text-indigo-800',
+                                            'picked_up' => 'bg-purple-100 text-purple-800',
+                                            'processing' => 'bg-orange-100 text-orange-800',
+                                            'out_for_delivery' => 'bg-teal-100 text-teal-800',
+                                            'completed' => 'bg-green-100 text-green-700',
+                                            'cancelled' => 'bg-red-100 text-red-700',
+                                        ];
+                                        $statusClass = $statusClasses[$request->status] ?? 'bg-gray-100 text-gray-600';
+                                        
+                                        $dotClasses = [
+                                            'pending' => 'bg-yellow-500',
+                                            'approved' => 'bg-blue-500',
+                                            'pickup_scheduled' => 'bg-indigo-500',
+                                            'picked_up' => 'bg-purple-500',
+                                            'processing' => 'bg-orange-500',
+                                            'out_for_delivery' => 'bg-teal-500',
+                                            'completed' => 'bg-green-500',
+                                            'cancelled' => 'bg-red-500',
+                                        ];
+                                        $dotClass = $dotClasses[$request->status] ?? 'bg-gray-400';
+                                    @endphp
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium {{ $statusClass }}">
+                                        <span class="w-1.5 h-1.5 rounded-full {{ $dotClass }}"></span>
+                                        {{ ucfirst(str_replace('_', ' ', $request->status)) }}
                                     </span>
                                 </div>
                                 <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-600 mb-4">
-                                    <p><span class="text-gray-400">Date:</span> 26 Oct 2023</p>
-                                    <p><span class="text-gray-400">Quantity:</span> 50ml</p>
-                                    <p><span class="text-gray-400">Cost:</span> ₹1,200</p>
+                                    <p><span class="text-gray-400">Date:</span> {{ $request->created_at->format('d M Y') }}</p>
+                                    <p><span class="text-gray-400">Quantity:</span> {{ $request->size }}ml</p>
+                                    <p><span class="text-gray-400">Pickup Date:</span> {{ $request->pickup_date->format('d M Y') }}</p>
                                 </div>
                                 <div class="flex gap-4">
-                                    <a href="/user-view-refill-request" class="text-sm text-indigo-600 font-medium hover:text-indigo-800">View Details</a>
+                                    <a href="{{ route('user.refill-request.show', $request->id) }}" class="text-sm text-indigo-600 font-medium hover:text-indigo-800">View Details</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Request Item 2 -->
-                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                        <div class="p-6 flex flex-col sm:flex-row gap-6">
-                            <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=300&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 class="font-bold text-gray-900">Rose Prick</h3>
-                                        <p class="text-sm text-gray-500">Refill ID: #REF-8301</p>
-                                    </div>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-                                        Processing
-                                    </span>
-                                </div>
-                                <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-600 mb-4">
-                                    <p><span class="text-gray-400">Date:</span> 20 Oct 2023</p>
-                                    <p><span class="text-gray-400">Quantity:</span> 30ml</p>
-                                    <p><span class="text-gray-400">Cost:</span> ₹800</p>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="/user-view-refill-request" class="text-sm text-indigo-600 font-medium hover:text-indigo-800">View Details</a>
-                                    <button class="text-sm text-red-600 font-medium hover:text-red-800">Cancel Request</button>
-                                </div>
-                            </div>
-                        </div>
+                    @empty
+                    <div class="text-center py-10">
+                        <p class="text-gray-500">No refill requests found.</p>
+                        <a href="{{ route('user.refill-request.create') }}" class="text-indigo-600 font-medium hover:underline mt-2 inline-block">Create your first request</a>
                     </div>
-
-                    <!-- Request Item 3 -->
-                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                        <div class="p-6 flex flex-col sm:flex-row gap-6">
-                            <div class="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=300&auto=format&fit=crop" alt="Perfume" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 class="font-bold text-gray-900">Black Orchid</h3>
-                                        <p class="text-sm text-gray-500">Refill ID: #REF-7902</p>
-                                    </div>
-                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                                        Cancelled
-                                    </span>
-                                </div>
-                                <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-gray-600 mb-4">
-                                    <p><span class="text-gray-400">Date:</span> 15 Sep 2023</p>
-                                    <p><span class="text-gray-400">Quantity:</span> 100ml</p>
-                                    <p><span class="text-gray-400">Cost:</span> ₹2,400</p>
-                                </div>
-                                <div class="flex gap-4">
-                                    <a href="/user-view-refill-request" class="text-sm text-indigo-600 font-medium hover:text-indigo-800">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    @endforelse
                 </div>
 
                 <!-- Pagination -->

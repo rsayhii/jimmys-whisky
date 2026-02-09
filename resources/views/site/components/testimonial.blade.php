@@ -23,8 +23,8 @@
         /* Side Images (Inactive) */
         .swiper-slide img {
             transition: all 0.5s ease;
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 24px; /* Rounded corners like screenshot */
             object-fit: cover;
             opacity: 0.3;
@@ -38,10 +38,21 @@
             transform: scale(1.6); /* Badi image */
             opacity: 1 !important;
             filter: grayscale(0%) !important;
-            width: 100px !important;
-            height: 100px !important;
+            width: 80px !important;
+            height: 80px !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         
+        }
+
+        @media (min-width: 768px) {
+            .swiper-slide img {
+                width: 80px;
+                height: 80px;
+            }
+            .swiper-slide-active img {
+                width: 100px !important;
+                height: 100px !important;
+            }
         }
 
         /* Navigation Arrows Styling */
@@ -136,14 +147,20 @@
 
     // Initialize Swiper
     const swiper = new Swiper(".mySwiper", {
-        slidesPerView: 5, // Exact 5 images visible (Center + 2 each side)
+        slidesPerView: 3,
+        spaceBetween: 10,
+        breakpoints: {
+            640: {
+                slidesPerView: 5,
+                spaceBetween: -10,
+            }
+        },
         centeredSlides: true,
         loop: true,
         autoplay: {
             delay: 2000,
             disableOnInteraction: false,
         },
-        spaceBetween: -10, // Adjusts overlap/gap
         slideToClickedSlide: true, // Click image to center it
         navigation: {
             nextEl: ".swiper-button-next",

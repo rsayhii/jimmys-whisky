@@ -39,17 +39,21 @@
 
             <!-- Form -->
             <div class="px-8 pb-10">
-                <form action="/admin/dashboard" method="GET" class="space-y-6">
+                <form action="{{ route('admin.login.post') }}" method="POST" class="space-y-6">
+                    @csrf
                     
-                    <!-- Email -->
+                    <!-- Email/Username -->
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-envelope text-gray-500 group-focus-within:text-[#c0863d] transition-colors duration-300"></i>
                         </div>
-                        <input type="email" name="email" required 
+                        <input type="text" name="email" value="{{ old('email') }}" required 
                             class="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-lg leading-5 bg-gray-800/50 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#c0863d] focus:border-[#c0863d] focus:bg-gray-800 transition duration-300 ease-in-out sm:text-sm" 
-                            placeholder="admin@example.com">
+                            placeholder="Email or Username">
                     </div>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
 
                     <!-- Password -->
                     <div class="relative group">
@@ -67,15 +71,10 @@
                     <!-- Actions -->
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-[#c0863d] focus:ring-[#c0863d] border-gray-600 rounded bg-gray-700 cursor-pointer">
+                            <input id="remember-me" name="remember" type="checkbox" class="h-4 w-4 text-[#c0863d] focus:ring-[#c0863d] border-gray-600 rounded bg-gray-700 cursor-pointer">
                             <label for="remember-me" class="ml-2 block text-sm text-gray-400 cursor-pointer hover:text-gray-300 transition-colors">Remember me</label>
                         </div>
 
-                        <div class="text-sm">
-                            <a href="#" class="font-medium text-[#c0863d] hover:text-[#d49a55] transition-colors">
-                                Forgot password?
-                            </a>
-                        </div>
                     </div>
 
                     <!-- Submit Button -->

@@ -67,9 +67,9 @@
                     <label for="remember-me" class="ml-2 block text-sm text-gray-900 cursor-pointer">Remember me</label>
                 </div>
 
-                <div class="text-sm">
+                <!-- <div class="text-sm">
                     <a href="#" class="font-medium text-[#c0863d] hover:text-[#a36b26] transition-colors">Forgot your password?</a>
-                </div>
+                </div> -->
             </div>
 
             <div>
@@ -81,7 +81,7 @@
                 </button>
             </div>
             
-            <div class="mt-6">
+            <!-- <div class="mt-6">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">
                         <div class="w-full border-t border-gray-300"></div>
@@ -97,7 +97,7 @@
                         <span>Google</span>
                     </a>
                 </div>
-            </div>
+            </div> -->
         </form>
     </div>
 </div>

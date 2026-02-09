@@ -99,11 +99,13 @@
             </li>
 
             <li class="pt-6 border-t border-gray-700">
-                <a href="{{ route('admin.login') }}"
-                   class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-600 transition text-red-400 hover:text-white">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </a>
+                <form action="{{ route('admin.logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-600 transition text-red-400 hover:text-white cursor-pointer">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </form>
             </li>
         </ul>
     </aside>

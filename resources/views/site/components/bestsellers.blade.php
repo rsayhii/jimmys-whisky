@@ -8,11 +8,11 @@
             <!-- Section Header with animation -->
             <div class="mb-10 md:mb-12">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-3xl md:text-4xl font-bold text-[#1A1A1A] tracking-tight">Best Sellers</h2>
+                    <h2 class="text-2xl md:text-4xl font-serif font-bold text-[#1A1A1A] tracking-tight">Best Sellers</h2>
                     
                     <!-- View All Button with animation -->
-                    <a href="#" class="group hidden md:flex items-center gap-2 text-[#D4A373] hover:text-[#B8864E] transition-colors duration-300">
-                        <span class="text-sm font-medium">View All</span>
+                    <a href="/collection" class="group flex items-center gap-2 text-[#D4A373] hover:text-[#B8864E] transition-colors duration-300">
+                        <span class="text-xs md:text-sm font-medium">View All</span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
@@ -34,11 +34,11 @@
                 </button>
 
                 <!-- Slider with enhanced card design -->
-                <div id="slider" class="flex gap-6 md:gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory py-4 px-2">
+                <div id="slider" class="flex gap-3 md:gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory py-4 px-2">
                     @foreach(($bestsellers ?? []) as $product)
-                    <div class="min-w-[280px] md:min-w-[calc(25%-24px)] flex flex-col slide-item snap-start group/card">
+                    <div class="min-w-[160px] md:min-w-[calc(25%-24px)] flex flex-col slide-item snap-start group/card">
                         <!-- Card Container with hover effects -->
-                        <div class="bg-white rounded-2xl h-[320px] w-full flex items-center justify-center mb-5 shadow-sm hover:shadow-xl transition-all duration-500 group-hover/card:scale-[1.02] relative overflow-hidden">
+                        <div class="bg-white rounded-2xl h-[220px] md:h-[320px] w-full flex items-center justify-center mb-3 md:mb-5 shadow-sm hover:shadow-xl transition-all duration-500 group-hover/card:scale-[1.02] relative overflow-hidden">
                             <!-- Background gradient on hover (REMOVED to fix white screen issue) -->
                             <!-- <div class="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-white opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 z-20"></div> -->
                             
@@ -50,8 +50,8 @@
                             </a>
                             
                             <!-- Quick View Button -->
-                            <button class="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover/card:opacity-100 transform group-hover/card:translate-y-0 translate-y-2 transition-all duration-300 hover:bg-[#D4A373] hover:text-white hover:scale-110 z-30">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <button class="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-8 h-8 md:w-10 md:h-10 bg-white rounded-full shadow-lg flex items-center justify-center opacity-100 md:opacity-0 md:group-hover/card:opacity-100 transform group-hover/card:translate-y-0 translate-y-0 md:translate-y-2 transition-all duration-300 hover:bg-[#D4A373] hover:text-white hover:scale-110 z-30">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
@@ -59,38 +59,38 @@
                         </div>
 
                         <!-- Product Info -->
-                        <div class="px-2">
+                        <div class="px-1 md:px-2">
                             <div class="flex items-center justify-between mb-1">
-                                <h4 class="text-xs font-bold tracking-widest text-[#D4A373] uppercase">{{ $product->brand ?? 'BRAND' }}</h4>
+                                <h4 class="text-[10px] md:text-xs font-bold tracking-widest text-[#D4A373] uppercase">{{ $product->brand ?? 'BRAND' }}</h4>
                                 <!-- Wishlist Button -->
-                                <button class="text-gray-300 hover:text-red-500 transition-colors duration-300 opacity-0 group-hover/card:opacity-100">
+                                <button class="text-gray-300 hover:text-red-500 transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover/card:opacity-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                     </svg>
                                 </button>
                             </div>
                             
-                            <a href="{{ route('product.show', $product->id) }}" class="block text-[15px] font-medium text-gray-800 truncate mb-1 group-hover/card:text-[#1A1A1A] transition-colors">{{ $product->name }}</a>
-                            <p class="text-xs text-gray-500 mb-3">{{ $product->concentration ?? '' }}</p>
+                            <a href="{{ route('product.show', $product->id) }}" class="block text-xs md:text-[15px] font-medium text-gray-800 truncate mb-1 group-hover/card:text-[#1A1A1A] transition-colors">{{ $product->name }}</a>
+                            <p class="text-[10px] md:text-xs text-gray-500 mb-2 md:mb-3">{{ $product->concentration ?? '' }}</p>
                             
                             <!-- Price and CTA -->
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
                                 <div>
                                     @if($product->discount_price)
-                                        <span class="text-lg font-bold text-[#1A1A1A]">₹{{ $product->discount_price }}</span>
-                                        <span class="text-sm text-gray-400 line-through ml-2">₹{{ $product->price }}</span>
+                                        <span class="text-sm md:text-lg font-bold text-[#1A1A1A]">₹{{ $product->discount_price }}</span>
+                                        <span class="text-xs md:text-sm text-gray-400 line-through ml-1 md:ml-2">₹{{ $product->price }}</span>
                                     @else
-                                        <span class="text-lg font-bold text-[#1A1A1A]">₹{{ $product->price }}</span>
+                                        <span class="text-sm md:text-lg font-bold text-[#1A1A1A]">₹{{ $product->price }}</span>
                                     @endif
                                 </div>
                                 
                                 @if($product->qty > 0)
-                                    <a href="{{ route('cart.add', $product->id) }}" class="px-4 py-2 bg-[#D4A373] text-white text-xs font-medium rounded-lg hover:bg-[#B8864E] transform hover:scale-105 active:scale-95 transition-all duration-300 opacity-0 group-hover/card:opacity-100 flex items-center justify-center">
-                                        Add to Cart
+                                    <a href="{{ route('cart.add', $product->id) }}" class="px-3 py-1.5 md:px-4 md:py-2 bg-[#D4A373] text-white text-[10px] md:text-xs font-medium rounded-lg hover:bg-[#B8864E] transform hover:scale-105 active:scale-95 transition-all duration-300 opacity-100 md:opacity-0 md:group-hover/card:opacity-100 flex items-center justify-center">
+                                        Add
                                     </a>
                                 @else
-                                    <button disabled class="px-4 py-2 bg-gray-300 text-gray-500 text-xs font-medium rounded-lg cursor-not-allowed opacity-0 group-hover/card:opacity-100">
-                                        Out of Stock
+                                    <button disabled class="px-3 py-1.5 md:px-4 md:py-2 bg-gray-300 text-gray-500 text-[10px] md:text-xs font-medium rounded-lg cursor-not-allowed opacity-100 md:opacity-0 md:group-hover/card:opacity-100">
+                                        Sold
                                     </button>
                                 @endif
                             </div>

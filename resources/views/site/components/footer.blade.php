@@ -24,10 +24,10 @@
             <div class="lg:col-span-1 space-y-6">
                 <div class="flex items-center gap-3 group cursor-pointer">
                     <div class="relative">
-                        <img src="{{ asset('assets/logo.png') }}" alt="Parcos Logo" class="w-12 h-12 object-contain opacity-90 transition-transform duration-500 group-hover:rotate-12">
+                        <img src="{{ asset('assets/logo.png') }}" alt="Jimmy's Whiskey Logo" class="w-12 h-12 object-contain opacity-90 transition-transform duration-500 group-hover:rotate-12">
                     </div>
                     <div class="flex flex-col">
-                        <img src="{{ asset('assets/logo-text.png') }}" alt="Parcos" class="w-24 h-auto opacity-90">
+                        <img src="{{ asset('assets/logo-text.png') }}" alt="Jimmy's Whiskey" class="w-24 h-auto opacity-90">
                         <span class="text-[9px] text-[#c0863d] font-bold tracking-[0.25em] uppercase mt-1">Pure Wellness</span>
                     </div>
                 </div>
@@ -51,12 +51,11 @@
             <div class="lg:col-span-1 lg:pl-8">
                 <h4 class="text-lg font-bold text-gray-900 mb-6 footer-heading">Shop</h4>
                 <ul class="space-y-3 text-sm font-medium text-gray-600">
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Fragrance</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Makeup</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Skincare</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Hair Care</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Exclusive Brands</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Gifting</a></li>
+                    <li><a href="{{ route('collection', ['category' => 'Perfume']) }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Fragrance</a></li>
+                    <li><a href="{{ route('collection', ['category' => 'Attar']) }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Attar</a></li>
+                    <li><a href="{{ route('collection', ['category' => 'Dakhoon']) }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Dakhoon</a></li>
+                    <li><a href="{{ route('collection', ['category' => 'Gift Set']) }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Gift Sets</a></li>
+                    <li><a href="{{ route('collection') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">All Products</a></li>
                 </ul>
             </div>
 
@@ -64,11 +63,11 @@
             <div class="lg:col-span-1">
                 <h4 class="text-lg font-bold text-gray-900 mb-6 footer-heading">Support</h4>
                 <ul class="space-y-3 text-sm font-medium text-gray-600">
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">About Us</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">My Account</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Order Status</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Membership</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Contact Us</a></li>
+                    <li><a href="{{ url('/about') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">About Us</a></li>
+                    <li><a href="{{ route('user.account') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">My Account</a></li>
+                    <li><a href="{{ route('site.dashboard.orders') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Order Status</a></li>
+                    <li><a href="{{ url('/user-membership') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Membership</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -76,10 +75,10 @@
             <div class="lg:col-span-1">
                 <h4 class="text-lg font-bold text-gray-900 mb-6 footer-heading">Legal</h4>
                 <ul class="space-y-3 text-sm font-medium text-gray-600">
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Terms & Conditions</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Shipping Policy</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Returns & Exchanges</a></li>
-                    <li><a href="#" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Privacy Policy</a></li>
+                    <li><a href="{{ route('policy.terms') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Terms & Conditions</a></li>
+                    <li><a href="{{ route('policy.shipping') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Shipping Policy</a></li>
+                    <li><a href="{{ route('policy.returns') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Returns & Exchanges</a></li>
+                    <li><a href="{{ route('policy.privacy') }}" class="hover:text-[#c0863d] hover:pl-2 transition-all duration-300 inline-block">Privacy Policy</a></li>
                 </ul>
             </div>
 
@@ -92,7 +91,7 @@
                             <i class="fas fa-map-marker-alt text-[#c0863d] text-xs"></i>
                         </div>
                         <span class="leading-relaxed">
-                            Parcos House, 123 Luxury Lane,<br>Mumbai, Maharashtra 400001
+                            Jimmy's Whiskey House, 123 Luxury Lane,<br>Mumbai, Maharashtra 400001
                         </span>
                     </li>
                     <li class="flex items-center gap-3 group">
@@ -105,7 +104,7 @@
                         <div class="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center shrink-0 group-hover:border-[#c0863d] transition-colors">
                             <i class="fas fa-envelope text-[#c0863d] text-xs"></i>
                         </div>
-                        <span class="group-hover:text-[#c0863d] transition-colors">support@parcos.com</span>
+                        <span class="group-hover:text-[#c0863d] transition-colors">support@jimmyswhiskey.com</span>
                     </li>
                 </ul>
                 
@@ -123,7 +122,7 @@
 
             <!-- Copyright -->
             <p class="text-xs text-gray-500 font-medium tracking-wide">
-                &copy; 2026 Parcos. All Rights Reserved.
+                &copy; 2026 Jimmy's Whiskey. All Rights Reserved.
             </p>
 
             <!-- Payment Icons -->
